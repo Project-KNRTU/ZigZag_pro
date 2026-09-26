@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0"
+    />
+
+    <meta
+      name="theme-color"
+      content="#2f80ed"
+    />
+
+    <title>ZigZag — маршруты по Казани</title>
+
+    <link
+      rel="stylesheet"
+      href="style.css"
+    />
+
+    <!-- Карта 2ГИС -->
+    <script src="https://mapgl.2gis.com/api/js/v1"></script>
+
+    <!-- Построение пешеходного маршрута 2ГИС -->
+    <script src="https://unpkg.com/@2gis/mapgl-directions@^2/dist/directions.js"></script>
+  </head>
+
+  <body>
+    <header class="site-header">
+      <div class="header-content">
+        <div>
+          <h1 class="logo">ZigZag</h1>
+
+          <p class="tagline">
+            Персональные маршруты по Казани
+          </p>
+        </div>
+
+        <span class="city-badge">
+          Казань
+        </span>
+      </div>
+    </header>
+
+    <main class="page-content">
+      <!-- ПАРАМЕТРЫ МАРШРУТА -->
+      <section class="card">
+        <div class="section-title-row">
+          <div>
+            <p class="section-label">
+              ШАГ 1
+            </p>
+
+            <h2>Настройте прогулку</h2>
+          </div>
+
+          <span
+            id="serverStatus"
+            class="server-status"
+          >
+            Проверка сервера…
+          </span>
+        </div>
+
+        <form id="routeForm">
+          <div class="form-grid">
+            <label class="field">
+              <span>С кем вы идёте</span>
+
+              <select
+                id="company"
+                name="company"
+              >
+                <option value="one">
+                  Один или одна
+                </option>
+
+                <option value="friends">
+                  С друзьями
+                </option>
+
+                <option value="family">
+                  Семья с детьми
+                </option>
+
+                <option value="couple">
+                  Свидание
+                </option>
+              </select>
+            </label>
+
+            <label class="field">
+              <span>Дата прогулки</span>
+
+              <input
+                id="visitDate"
+                name="visitDate"
+                type="date"
+                required
+              />
+            </label>
+
+            <label class="field">
+              <span>Начало</span>
+
+              <input
+                id="startTime"
+                name="startTime"
+                type="time"
+                value="12:00"
+                required
+              />
+            </label>
+
+            <label class="field">
+              <span>Конец</span>
+
+              <input
+                id="endTime"
+                name="endTime"
+                type="time"
+                value="18:00"
+                required
+              />
+            </label>
+
+            <label class="field form-grid-full">
+              <span>Бюджет на человека</span>
+
+              <select
+                id="budget"
+                name="budget"
+              >
+                <option value="economy">
+                  Эконом — до 1 000 ₽
+                </option>
+
+                <option value="medium" selected>
+                  Средний — до 3 000 ₽
+                </option>
+
+                <option value="premium">
+                  Без ограничений
+                </option>
+              </select>
+            </label>
+          </div>
+
+          <fieldset class="interests">
+            <legend>
+              Что вам интересно
+            </legend>
+
+            <div class="interest-list">
+              <label class="check-label">
+                <input
+                  type="checkbox"
+                  name="interest"
+                  value="cafes"
+                  checked
+                />
+
+                <span>Кафе и рестораны</span>
+              </label>
+
+              <label class="check-label">
+                <input
+                  type="checkbox"
+                  name="interest"
+                  value="museums"
+                  checked
+                />
+
+                <span>Музеи</span>
+              </label>
+
+              <label class="check-label">
+                <input
+                  type="checkbox"
+                  name="interest"
+                  value="parks"
+                  checked
+                />
+
+                <span>Парки</span>
+              </label>
+
+              <label class="check-label">
+                <input
+                  type="checkbox"
+                  name="interest"
+                  value="malls"
+                />
+
+                <span>Торговые центры</span>
+              </label>
+
+              <label class="check-label">
+                <input
+                  type="checkbox"
+                  name="interest"
+                  value="sights"
+                  checked
+                />
+
+                <span>Достопримечательности</span>
+              </label>
+            </div>
+          </fieldset>
+
+          <button
+            id="findPlacesButton"
+            class="primary-button"
+            type="submit"
+          >
+            Найти места и построить маршрут
+          </button>
+        </form>
+      </section>
+
+      <!-- РЕАЛЬНЫЕ МЕСТА -->
+      <section class="card">
+        <div class="section-title-row">
+          <div>
+            <p class="section-label">
+              ШАГ 2
+            </p>
+
+            <h2>Выберите места</h2>
+          </div>
+
+          <span
+            id="placesCount"
+            class="count-badge"
+          >
+            0 мест
+          </span>
+        </div>
+
+        <p class="section-description">
+          Нажмите на карточки, чтобы добавить или убрать место из маршрута.
+          Если ничего не выбрать, ZigZag сам составит маршрут из подходящих мест.
+        </p>
+
+        <div
+          id="placesInfo"
+          class="info-message"
+        >
+          Выберите параметры прогулки и нажмите кнопку «Найти места».
+        </div>
+
+        <div
+          id="places"
+          class="places-list"
+        ></div>
+      </section>
+
+      <!-- КАРТА И МАРШРУТ -->
+      <section class="card">
+        <div class="section-title-row">
+          <div>
+            <p class="section-label">
+              ШАГ 3
+            </p>
+
+            <h2>Ваш маршрут</h2>
+          </div>
+        </div>
+
+        <div
+          id="map"
+          class="map"
+          aria-label="Карта маршрута по Казани"
+        ></div>
+
+        <div
+          id="routeInfo"
+          class="info-message route-info"
+        >
+          Маршрут пока не построен.
+        </div>
+
+        <div
+          id="routeList"
+          class="route-list"
+        ></div>
+
+        <div class="route-actions">
+          <button
+            id="saveRouteButton"
+            class="primary-button"
+            type="button"
+            hidden
+          >
+            Сохранить маршрут
+          </button>
+
+          <button
+            id="showSavedRoutesButton"
+            class="secondary-button"
+            type="button"
+          >
+            Мои сохранённые маршруты
+          </button>
+        </div>
+
+        <div
+          id="savedRoutes"
+          class="saved-routes"
+        ></div>
+      </section>
+
+      <!-- АФИША -->
+      <section class="card">
+        <div class="section-title-row">
+          <div>
+            <p class="section-label">
+              АФИША
+            </p>
+
+            <h2>События в Казани</h2>
+          </div>
+
+          <span
+            id="eventsCount"
+            class="count-badge"
+          >
+            0 событий
+          </span>
+        </div>
+
+        <p class="section-description">
+          Подходящие события подбираются по вашему бюджету и формату прогулки.
+        </p>
+
+        <div
+          id="eventsInfo"
+          class="info-message"
+        >
+          Выберите дату и постройте маршрут, чтобы увидеть события.
+        </div>
+
+        <div
+          id="eventsList"
+          class="events-list"
+        ></div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <p>
+        ZigZag · Маршруты по Казани
+      </p>
+
+      <p class="footer-note">
+        Места: OpenStreetMap · Афиша: KudaGo · Карта: 2ГИС
+      </p>
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
+</html>
