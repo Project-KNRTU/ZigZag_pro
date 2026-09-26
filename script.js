@@ -500,7 +500,7 @@ function renderEvents(events) {
             ·
              ${escapeHtml(event.startTime || 'Время уточняется')}
             ·
-            💳 ${escapeHtml(priceText)}
+             ${escapeHtml(priceText)}
             ·
              ${escapeHtml(event.ageRestriction || 'Возраст не указан')}
             ·

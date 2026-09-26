@@ -1,5 +1,5 @@
 console.log(
-  '✅ НОВЫЙ live-data.js загружен: 2ГИС + KudaGo'
+  '2ГИС + KudaGo'
 );
 
 const key = process.env.DGIS_SEARCH_KEY;
@@ -169,7 +169,7 @@ async function getPlacesByCategory(categoryName) {
 
   if (cachedPlaces) {
     console.log(
-      `📦 2ГИС: кэш для категории ${categoryName}`
+      ` 2ГИС: кэш для категории ${categoryName}`
     );
 
     return cachedPlaces;
@@ -242,7 +242,7 @@ async function getPlacesByCategory(categoryName) {
 
   console.log('');
   console.log(
-    `🔎 2ГИС: ищем ${categoryName}`
+    ` 2ГИС: ищем ${categoryName}`
   );
   console.log(
     `   Запрос: ${category.query} Казань`
@@ -274,11 +274,11 @@ async function getPlacesByCategory(categoryName) {
   const items = responseData.result?.items || [];
 
   console.log(
-    `📍 2ГИС: получено объектов: ${items.length}`
+    ` 2ГИС: получено объектов: ${items.length}`
   );
 
   console.log(
-    '📋 Первые объекты 2ГИС:',
+    ' Первые объекты 2ГИС:',
     items.slice(0, 3).map((item) => {
       return {
         id: item.id,
@@ -309,7 +309,7 @@ async function getPlacesByCategory(categoryName) {
       */
       if (!name || !coords) {
         console.warn(
-          '⚠️ 2ГИС: объект пропущен',
+          ' 2ГИС: объект пропущен',
           {
             id: item.id,
             name: item.name,
@@ -365,7 +365,7 @@ async function getPlacesByCategory(categoryName) {
     .filter(Boolean);
 
   console.log(
-    `✅ 2ГИС: после обработки ${places.length} реальных мест`
+    ` 2ГИС: после обработки ${places.length} реальных мест`
   );
 
   return saveCache(cacheKey, places);
@@ -389,7 +389,7 @@ async function getPlaces(selectedCategories = []) {
 
   console.log('');
   console.log(
-    '📋 Загружаем категории:',
+    ' Загружаем категории:',
     categoriesToLoad
   );
 
@@ -414,7 +414,7 @@ async function getPlaces(selectedCategories = []) {
   ];
 
   console.log(
-    `🎯 Всего реальных мест: ${finalPlaces.length}`
+    ` Всего реальных мест: ${finalPlaces.length}`
   );
 
   return finalPlaces;
@@ -595,7 +595,7 @@ async function getEvents(visitDate) {
 
   if (cachedEvents) {
     console.log(
-      `📦 KudaGo: кэш афиши на ${visitDate}`
+      ` KudaGo: кэш афиши на ${visitDate}`
     );
 
     return cachedEvents;
@@ -665,7 +665,7 @@ async function getEvents(visitDate) {
 
   console.log('');
   console.log(
-    `🎭 KudaGo: загружаем афишу Казани на ${visitDate}`
+    ` KudaGo: загружаем афишу Казани на ${visitDate}`
   );
 
   const response = await fetch(requestUrl);
@@ -684,7 +684,7 @@ async function getEvents(visitDate) {
   const apiEvents = responseData.results || [];
 
   console.log(
-    `🎭 KudaGo: получено событий: ${apiEvents.length}`
+    ` KudaGo: получено событий: ${apiEvents.length}`
   );
 
   const events = apiEvents
