@@ -1629,3 +1629,406 @@ h2 {
     letter-spacing: -2px;
   }
 }
+
+
+
+/* =========================================================
+   ZIGZAG — ФОНОВЫЕ ФИГУРЫ / TRAVEL ROUTE STYLE
+   Добавить в самый конец style.css
+   ========================================================= */
+
+
+/*
+  Основной фон с мелкими дизайнерскими точками.
+  Не заменяет ваш синий градиент.
+*/
+body {
+  position: relative;
+
+  overflow-x: hidden;
+
+  background-image:
+    radial-gradient(
+      circle at 15% 20%,
+      rgba(255, 255, 255, 0.1) 1px,
+      transparent 2px
+    ),
+    radial-gradient(
+      circle at 80% 70%,
+      rgba(255, 255, 255, 0.08) 1px,
+      transparent 2px
+    ),
+    radial-gradient(
+      circle at 78% 16%,
+      rgba(104, 88, 255, 0.42),
+      transparent 26%
+    ),
+    radial-gradient(
+      circle at 10% 80%,
+      rgba(65, 83, 255, 0.28),
+      transparent 28%
+    ),
+    linear-gradient(
+      135deg,
+      #08076a 0%,
+      #17149d 46%,
+      #2925c7 100%
+    );
+
+  background-size:
+    70px 70px,
+    110px 110px,
+    auto,
+    auto,
+    auto;
+}
+
+
+/*
+  Сетка на фоне.
+*/
+body::before {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+
+  opacity: 0.35;
+
+  background-image:
+    linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.07) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      rgba(255, 255, 255, 0.07) 1px,
+      transparent 1px
+    );
+
+  background-size: 150px 150px;
+
+  content: "";
+
+  pointer-events: none;
+}
+
+
+/*
+  Диагональная маршрутная линия.
+*/
+body::after {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 0;
+
+  width: 100%;
+  height: 100%;
+
+  opacity: 0.13;
+
+  background: linear-gradient(
+    135deg,
+    transparent 0%,
+    transparent 17%,
+    rgba(255, 255, 255, 0.7) 17.1%,
+    rgba(255, 255, 255, 0.7) 17.3%,
+    transparent 17.4%,
+    transparent 34%,
+    rgba(255, 255, 255, 0.7) 34.1%,
+    rgba(255, 255, 255, 0.7) 34.3%,
+    transparent 34.4%,
+    transparent 52%,
+    rgba(255, 255, 255, 0.7) 52.1%,
+    rgba(255, 255, 255, 0.7) 52.3%,
+    transparent 52.4%
+  );
+
+  content: "";
+
+  transform: rotate(-8deg) scale(1.2);
+
+  pointer-events: none;
+}
+
+
+/*
+  Контент должен быть поверх декоративного фона.
+*/
+.site-header,
+.page-content,
+.site-footer {
+  position: relative;
+  z-index: 1;
+}
+
+
+/* =========================================================
+   БОЛЬШАЯ ГЕОМЕТКА СПРАВА
+   ========================================================= */
+
+
+.page-content::before {
+  position: fixed;
+  top: 100px;
+  right: -100px;
+  z-index: 0;
+
+  width: 360px;
+  height: 360px;
+
+  border: 32px solid rgba(255, 255, 255, 0.1);
+  border-radius: 50% 50% 50% 0;
+
+  box-shadow:
+    inset 0 0 0 8px rgba(255, 255, 255, 0.025),
+    0 0 0 1px rgba(255, 255, 255, 0.04);
+
+  content: "";
+
+  opacity: 0.9;
+
+  transform: rotate(-45deg);
+
+  pointer-events: none;
+}
+
+
+/* =========================================================
+   БОЛЬШОЙ КОМПАС СЛЕВА
+   ========================================================= */
+
+
+.page-content::after {
+  position: fixed;
+  bottom: 80px;
+  left: -130px;
+  z-index: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 330px;
+  height: 330px;
+
+  border: 26px solid rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+
+  color: rgba(255, 255, 255, 0.12);
+
+  box-shadow:
+    inset 0 0 0 8px rgba(255, 255, 255, 0.025),
+    0 0 0 1px rgba(255, 255, 255, 0.035);
+
+  font-family: Arial, sans-serif;
+  font-size: 190px;
+  font-weight: 300;
+
+  content: "✦";
+
+  transform: rotate(18deg);
+
+  pointer-events: none;
+}
+
+
+/* =========================================================
+   ДЕКОР В КАРТОЧКАХ
+   ========================================================= */
+
+
+/*
+  Круглая фигура в правом верхнем углу карточек.
+*/
+.card {
+  position: relative;
+}
+
+
+.card::before {
+  position: absolute;
+  top: -72px;
+  right: -76px;
+  z-index: 0;
+
+  width: 185px;
+  height: 185px;
+
+  border: 18px solid rgba(255, 255, 255, 0.055);
+  border-radius: 50%;
+
+  content: "";
+
+  pointer-events: none;
+}
+
+
+/*
+  Карточки и текст должны быть выше декора.
+*/
+.card > * {
+  position: relative;
+  z-index: 1;
+}
+
+
+/*
+  Декоративная пунктирная линия в блоке карты.
+*/
+.card:nth-child(3)::after {
+  position: absolute;
+  top: 90px;
+  right: -170px;
+  z-index: 0;
+
+  width: 520px;
+  height: 180px;
+
+  border-top: 5px dashed rgba(255, 255, 255, 0.08);
+  border-right: 5px dashed rgba(255, 255, 255, 0.08);
+  border-radius: 50%;
+
+  content: "";
+
+  transform: rotate(20deg);
+
+  pointer-events: none;
+}
+
+
+/*
+  Маленькие маршрутные точки в карточках мест.
+*/
+.place-card {
+  position: relative;
+}
+
+
+.place-card::after {
+  position: absolute;
+  top: 18px;
+  right: 19px;
+
+  color: rgba(255, 255, 255, 0.13);
+
+  font-size: 17px;
+  letter-spacing: 4px;
+
+  content: "● · · · ◆";
+
+  pointer-events: none;
+}
+
+
+/*
+  Декор для блока афиши.
+*/
+.events-list {
+  position: relative;
+}
+
+
+.events-list::before {
+  position: absolute;
+  top: -58px;
+  right: 22px;
+  z-index: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 150px;
+  height: 150px;
+
+  border: 15px solid rgba(255, 255, 255, 0.05);
+  border-radius: 50%;
+
+  color: rgba(255, 255, 255, 0.06);
+
+  font-size: 78px;
+
+  content: "✦";
+
+  pointer-events: none;
+}
+
+
+.events-list > * {
+  position: relative;
+  z-index: 1;
+}
+
+
+/* =========================================================
+   МОБИЛЬНАЯ ВЕРСИЯ
+   ========================================================= */
+
+
+@media (max-width: 700px) {
+  .page-content::before {
+    top: 145px;
+    right: -100px;
+
+    width: 220px;
+    height: 220px;
+
+    border-width: 20px;
+  }
+
+  .page-content::after {
+    bottom: 95px;
+    left: -105px;
+
+    width: 210px;
+    height: 210px;
+
+    border-width: 18px;
+
+    font-size: 110px;
+  }
+
+  .card::before {
+    top: -45px;
+    right: -48px;
+
+    width: 125px;
+    height: 125px;
+
+    border-width: 12px;
+  }
+
+  .card:nth-child(3)::after {
+    top: 80px;
+    right: -160px;
+
+    width: 300px;
+    height: 120px;
+
+    border-width: 3px;
+  }
+
+  .events-list::before {
+    top: -40px;
+    right: -24px;
+
+    width: 110px;
+    height: 110px;
+
+    border-width: 11px;
+
+    font-size: 55px;
+  }
+
+  .place-card::after {
+    top: 15px;
+    right: 15px;
+
+    font-size: 14px;
+    letter-spacing: 2px;
+  }
+}
+
+
+

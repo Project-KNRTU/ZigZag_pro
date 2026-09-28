@@ -66,7 +66,7 @@
         <div class="section-title-row">
           <div>
 
-            <h2>Настройте прогулку</h2>
+            <h2>Постройте маршрут</h2>
           </div>
 
           <span
@@ -168,7 +168,6 @@
                   type="checkbox"
                   name="interest"
                   value="cafes"
-                  checked
                 />
 
                 <span>Кафе и рестораны</span>
@@ -179,7 +178,6 @@
                   type="checkbox"
                   name="interest"
                   value="museums"
-                  checked
                 />
 
                 <span>Музеи</span>
@@ -190,7 +188,6 @@
                   type="checkbox"
                   name="interest"
                   value="parks"
-                  checked
                 />
 
                 <span>Парки</span>
@@ -211,7 +208,6 @@
                   type="checkbox"
                   name="interest"
                   value="sights"
-                  checked
                 />
 
                 <span>Достопримечательности</span>
@@ -290,40 +286,15 @@
           class="route-list"
         ></div>
 
-        <div class="route-actions">
-          <button
-            id="saveRouteButton"
-            class="primary-button"
-            type="button"
-            hidden
-          >
-            Сохранить маршрут
-          </button>
-
-          <button
-            id="showSavedRoutesButton"
-            class="secondary-button"
-            type="button"
-          >
-            Мои сохранённые маршруты
-          </button>
-        </div>
-
-        <div
-          id="savedRoutes"
-          class="saved-routes"
-        ></div>
+         
       </section>
 
       <!-- АФИША -->
       <section class="card">
         <div class="section-title-row">
           <div>
-            <p class="section-label">
-              АФИША
-            </p>
 
-            <h2>События в Казани</h2>
+            <h2>АФИША</h2>
           </div>
 
           <span
@@ -333,10 +304,6 @@
             0 событий
           </span>
         </div>
-
-        <p class="section-description">
-          Подходящие события подбираются по вашему бюджету и формату прогулки.
-        </p>
 
         <div
           id="eventsInfo"
@@ -352,6 +319,11 @@
       </section>
     </main>
 
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/ru.js"></script>
+    
+    <script src="https://st.max.ru/js/max-web-app.js"></script>
     <script src="script.js"></script>
   </body>
 </html>

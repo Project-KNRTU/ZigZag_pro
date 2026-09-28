@@ -1,6 +1,44 @@
 let MAPGL_KEY = '';
 let DIRECTIONS_KEY = '';
 
+/*
+  Безопасно получаем объект мини-приложения MAX.
+
+  В обычном браузере window.WebApp отсутствует,
+  поэтому сайт продолжит работать и вне MAX.
+*/
+const maxWebApp = window.WebApp || null;
+
+
+/*
+  Настраивает поведение приложения внутри MAX.
+*/
+function initializeMaxApp() {
+  if (!maxWebApp) {
+    console.log('ZigZag открыт в обычном браузере.');
+
+    return;
+  }
+
+  console.log(
+    'ZigZag открыт внутри MAX.',
+    maxWebApp.platform
+  );
+
+  /*
+    Предупреждает пользователя при попытке закрыть
+    приложение с незаполненной формой.
+  */
+  maxWebApp.enableClosingConfirmation?.();
+
+  /*
+    Даёт лёгкий тактильный отклик на телефоне MAX.
+  */
+  maxWebApp.HapticFeedback?.impactOccurred?.(
+    'light'
+  );
+}
+
 let map = null;
 let directions = null;
 let markers = [];
@@ -433,7 +471,6 @@ async function buildRoute() {
     );
 
     $('#routeList').innerHTML = '';
-    $('#saveRouteButton').hidden = true;
 
     clearMapMarkers();
     directions?.clear();
@@ -450,8 +487,6 @@ async function buildRoute() {
   );
 
   renderRouteList();
-
-  $('#saveRouteButton').hidden = false;
 
   await drawRouteOnMap();
 }
@@ -651,7 +686,6 @@ async function loadPlaces(event) {
 
       builtRoute = [];
       $('#routeList').innerHTML = '';
-      $('#saveRouteButton').hidden = true;
 
       clearMapMarkers();
       directions?.clear();
@@ -674,7 +708,6 @@ async function loadPlaces(event) {
     renderPlaces();
 
     $('#routeList').innerHTML = '';
-    $('#saveRouteButton').hidden = true;
 
     clearMapMarkers();
     directions?.clear();
@@ -691,309 +724,16 @@ async function loadPlaces(event) {
   }
 }
 
-async function saveRoute() {
-  if (builtRoute.length === 0) {
-    showInfo(
-      'routeInfo',
-      'Сначала постройте маршрут.',
-      'is-error'
-    );
-
-    return;
-  }
-
-  const settings = getSettings();
-
-  try {
-    $('#saveRouteButton').disabled = true;
-    $('#saveRouteButton').textContent =
-      'Сохраняем…';
-
-    const response = await requestApi('/api/routes', {
-      method: 'POST',
-
-      headers: {
-        'Content-Type': 'application/json'
-      },
-
-      body: JSON.stringify({
-        title: `Маршрут по Казани на ${settings.visitDate}`,
-        visitDate: settings.visitDate,
-        startTime: settings.startTime,
-        endTime: settings.endTime,
-        company: settings.company,
-        budget: settings.budget,
-        interests: settings.interests,
-        route: builtRoute,
-        events: builtEvents
-      })
-    });
-
-    showInfo(
-      'routeInfo',
-      `Маршрут сохранён. Номер маршрута: ${response.id}.`,
-      'is-success'
-    );
-  } catch (error) {
-    showInfo(
-      'routeInfo',
-      `Ошибка сохранения: ${error.message}`,
-      'is-error'
-    );
-  } finally {
-    $('#saveRouteButton').disabled = false;
-    $('#saveRouteButton').textContent =
-      'Сохранить маршрут';
-  }
-}
-
-function renderSavedRoutes(routes) {
-  const container = $('#savedRoutes');
-
-  if (!routes.length) {
-    container.innerHTML = `
-      <div class="info-message">
-        Сохранённых маршрутов пока нет.
-      </div>
-    `;
-
-    return;
-  }
-
-  container.innerHTML = routes
-    .map((savedRoute) => {
-      const routeData = savedRoute.data || {};
-      const routePlaces = Array.isArray(routeData.route)
-        ? routeData.route
-        : [];
-
-      const routeEvents = Array.isArray(routeData.events)
-        ? routeData.events
-        : [];
-
-      return `
-        <article class="saved-route-card">
-          <h3>${escapeHtml(savedRoute.title)}</h3>
-
-          <div class="card-meta">
-             ${escapeHtml(routeData.visitDate || 'Дата не указана')}
-            ·
-             ${routePlaces.length} точек
-            ·
-             ${routeEvents.length} событий
-            ·
-             ${escapeHtml(formatDateTime(savedRoute.createdAt))}
-          </div>
-
-          <div class="route-actions">
-            <button
-              class="secondary-button open-saved-route-button"
-              type="button"
-              data-route-id="${savedRoute.id}"
-            >
-              Открыть маршрут
-            </button>
-
-            <button
-              class="secondary-button delete-saved-route-button"
-              type="button"
-              data-route-id="${savedRoute.id}"
-            >
-              Удалить
-            </button>
-          </div>
-        </article>
-      `;
-    })
-    .join('');
-
-  document
-    .querySelectorAll('.open-saved-route-button')
-    .forEach((button) => {
-      button.addEventListener('click', async () => {
-        await openSavedRoute(
-          Number(button.dataset.routeId)
-        );
-      });
-    });
-
-  document
-    .querySelectorAll('.delete-saved-route-button')
-    .forEach((button) => {
-      button.addEventListener('click', async () => {
-        await deleteSavedRoute(
-          Number(button.dataset.routeId)
-        );
-      });
-    });
-}
-
-async function showSavedRoutes() {
-  const container = $('#savedRoutes');
-
-  container.innerHTML = `
-    <div class="info-message">
-      Загружаем сохранённые маршруты…
-    </div>
-  `;
-
-  try {
-    const response = await requestApi('/api/routes');
-
-    renderSavedRoutes(response.routes || []);
-  } catch (error) {
-    container.innerHTML = `
-      <div class="info-message is-error">
-        Не удалось загрузить маршруты: ${escapeHtml(error.message)}
-      </div>
-    `;
-  }
-}
-
-async function openSavedRoute(routeId) {
-  if (!Number.isInteger(routeId) || routeId <= 0) {
-    return;
-  }
-
-  try {
-    const response = await requestApi(
-      `/api/routes/${routeId}`
-    );
-
-    const routeData = response.route.data || {};
-
-    if (routeData.visitDate) {
-      $('#visitDate').value = routeData.visitDate;
-    }
-
-    if (routeData.startTime) {
-      $('#startTime').value = routeData.startTime;
-    }
-
-    if (routeData.endTime) {
-      $('#endTime').value = routeData.endTime;
-    }
-
-    if (routeData.company) {
-      $('#company').value = routeData.company;
-    }
-
-    if (routeData.budget) {
-      $('#budget').value = routeData.budget;
-    }
-
-    allPlaces = Array.isArray(routeData.route)
-      ? routeData.route
-      : [];
-
-    builtRoute = [...allPlaces];
-
-    builtEvents = Array.isArray(routeData.events)
-      ? routeData.events
-      : [];
-
-    selectedPlaceIds = new Set(
-      allPlaces.map((place) => place.id)
-    );
-
-    renderPlaces();
-    renderRouteList();
-    renderEvents(builtEvents);
-
-    $('#placesCount').textContent =
-      `${allPlaces.length} мест`;
-
-    $('#eventsCount').textContent =
-      `${builtEvents.length} событий`;
-
-    $('#saveRouteButton').hidden =
-      builtRoute.length === 0;
-
-    showInfo(
-      'routeInfo',
-      `Открыт сохранённый маршрут «${response.route.title}».`,
-      'is-success'
-    );
-
-    showInfo(
-      'eventsInfo',
-      builtEvents.length > 0
-        ? 'Показаны события, сохранённые вместе с маршрутом.'
-        : 'В сохранённом маршруте нет событий.',
-      builtEvents.length > 0
-        ? 'is-success'
-        : ''
-    );
-
-    await drawRouteOnMap();
-
-    window.scrollTo({
-      top: $('#map').getBoundingClientRect().top +
-        window.scrollY -
-        20,
-      behavior: 'smooth'
-    });
-  } catch (error) {
-    showInfo(
-      'routeInfo',
-      `Не удалось открыть маршрут: ${error.message}`,
-      'is-error'
-    );
-  }
-}
-
-async function deleteSavedRoute(routeId) {
-  if (!Number.isInteger(routeId) || routeId <= 0) {
-    return;
-  }
-
-  const isConfirmed = window.confirm(
-    'Удалить сохранённый маршрут?'
-  );
-
-  if (!isConfirmed) {
-    return;
-  }
-
-  try {
-    await requestApi(`/api/routes/${routeId}`, {
-      method: 'DELETE'
-    });
-
-    await showSavedRoutes();
-
-    showInfo(
-      'routeInfo',
-      'Сохранённый маршрут удалён.',
-      'is-success'
-    );
-  } catch (error) {
-    showInfo(
-      'routeInfo',
-      `Не удалось удалить маршрут: ${error.message}`,
-      'is-error'
-    );
-  }
-}
-
 document.addEventListener(
   'DOMContentLoaded',
   async () => {
+    initializeMaxApp();
+
     $('#visitDate').value = getTodayInKazan();
 
     $('#routeForm').addEventListener(
       'submit',
       loadPlaces
-    );
-
-    $('#saveRouteButton').addEventListener(
-      'click',
-      saveRoute
-    );
-
-    $('#showSavedRoutesButton').addEventListener(
-      'click',
-      showSavedRoutes
     );
 
     try {

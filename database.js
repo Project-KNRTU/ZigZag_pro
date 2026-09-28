@@ -1,17 +1,51 @@
+const fs = require('node:fs');
+const path = require('node:path');
+
 const Database = require('better-sqlite3');
 
+
 /*
-  SQLite создаст файл zigzag.db
-  в папке проекта автоматически.
+  Если DB_PATH есть в .env:
+  ./data/zigzag.db
+
+  База будет храниться в папке проекта:
+  ZigZag_pro/data/zigzag.db
+
+  Если переменной нет, используем:
+  ZigZag_pro/zigzag.db
 */
-const db = new Database('zigzag.db');
+const databasePath = process.env.DB_PATH
+  ? path.resolve(process.env.DB_PATH)
+  : path.join(__dirname, 'zigzag.db');
+
 
 /*
-  Таблица для сохранённых маршрутов.
+  Получаем папку, где должна лежать база.
+*/
+const databaseDirectory = path.dirname(
+  databasePath
+);
 
-  Сейчас все маршруты относятся к тестовому пользователю.
-  Позже вместо user_id = "development-user"
-  будет использоваться настоящий ID пользователя MAX.
+
+/*
+  Создаём папку data автоматически,
+  если её ещё нет.
+*/
+fs.mkdirSync(databaseDirectory, {
+  recursive: true
+});
+
+
+console.log(
+  `SQLite database: ${databasePath}`
+);
+
+
+const db = new Database(databasePath);
+
+
+/*
+  Таблица сохранённых маршрутов.
 */
 db.exec(`
   CREATE TABLE IF NOT EXISTS routes (
@@ -27,6 +61,10 @@ db.exec(`
   );
 `);
 
+
+/*
+  Сохранение маршрута.
+*/
 function saveRoute(routeData) {
   const title =
     routeData.title ||
@@ -37,10 +75,7 @@ function saveRoute(routeData) {
       title,
       route_data
     )
-    VALUES (
-      ?,
-      ?
-    )
+    VALUES (?, ?)
   `);
 
   const result = statement.run(
@@ -51,6 +86,10 @@ function saveRoute(routeData) {
   return Number(result.lastInsertRowid);
 }
 
+
+/*
+  Список маршрутов тестового пользователя.
+*/
 function getRoutes() {
   const statement = db.prepare(`
     SELECT
@@ -77,6 +116,10 @@ function getRoutes() {
   });
 }
 
+
+/*
+  Один маршрут по его ID.
+*/
 function getRouteById(routeId) {
   const statement = db.prepare(`
     SELECT
@@ -106,6 +149,10 @@ function getRouteById(routeId) {
   };
 }
 
+
+/*
+  Удаление маршрута.
+*/
 function deleteRoute(routeId) {
   const statement = db.prepare(`
     DELETE FROM routes
@@ -120,6 +167,7 @@ function deleteRoute(routeId) {
 
   return result.changes > 0;
 }
+
 
 module.exports = {
   saveRoute,

@@ -1,9 +1,12 @@
 {
   "name": "zigzag_pro",
   "version": "1.0.0",
-  "description": "Мини‑приложение в MAX для планирования маршрута по городу (достопримечательности, ТЦ, кафе и т.д.) с учётом компании, времени, интересов и транспорта.",
-  "main": "script.js",
+  "description": "Мини-приложение в MAX для планирования маршрута по городу",
+  "main": "server.js",
   "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "bot": "node bot.mjs",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -19,11 +22,17 @@
   },
   "homepage": "https://github.com/Project-KNRTU/ZigZag_pro#readme",
   "dependencies": {
-   "@maxhub/max-ui": "0.5.0",
+    "@maxhub/max-bot-api": "^0.3.1",
+    "@maxhub/max-ui": "0.5.0",
     "better-sqlite3": "^12.0.0",
     "dotenv": "^16.6.1",
     "express": "^5.1.0",
     "react": "19.2.8",
     "react-dom": "19.2.8"
+  }
 }
-}
+
+
+
+
+

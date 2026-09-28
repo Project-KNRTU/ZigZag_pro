@@ -325,11 +325,11 @@ app.use((request, response) => {
 });
 
 
-app.listen(PORT, () => {
+app.listen(PORT, '0.0.0.0', () => {
   console.log('');
   console.log('==============================');
   console.log(' ZigZag запущен');
-  console.log(` http://localhost:${PORT}`);
+  console.log(` Порт: ${PORT}`);
   console.log('==============================');
   console.log('');
 });
