@@ -53,38 +53,37 @@ app.post('/webhook', async (request, response) => {
       JSON.stringify(update, null, 2)
     );
 
-     
-    if (update.update_type === 'message_created') {
-      const message = update.message || update;
+     if (update.update_type === 'message_created') {
+  const message = update.message || update;
 
-       const userId =
-  update.user_id ||
-  message.user_id ||
-  message.recipient?.user_id;
+  const userId = message.sender?.user_id;
 
-const chatId =
-  update.chat_id ||
-  message.chat_id ||
-  message.recipient?.chat_id;
+  const chatId =
+    message.recipient?.chat_id ||
+    message.chat_id;
 
-      const text =
-        message.body?.text ||
-        '';
+  const text =
+    message.body?.text ||
+    '';
 
-      console.log('MAX MESSAGE:', {
-  userId,
-  botUserId: message.recipient?.user_id,
-  chatId,
-  text
-});
-
-if (userId) {
-  await sendMaxMessage(
+  console.log('MAX MESSAGE:', {
     userId,
-          `Привет! 👋\n\nЯ бот ZigZag.\n\nТы написал: ${text}`
-        );
-      }
-    }
+    botUserId: message.recipient?.user_id,
+    chatId,
+    text
+  });
+
+  if (userId) {
+    await sendMaxMessage(
+      userId,
+      `Привет! 👋\n\nЯ бот ZigZag.\n\nТы написал: ${text}`
+    );
+  } else {
+    console.warn(
+      'MAX MESSAGE: не найден userId отправителя'
+    );
+  }
+}
 
      
      if (update.update_type === 'bot_started') {
@@ -115,9 +114,7 @@ if (userId) {
 });
 
 
-
-
-async function sendMaxMessage(userId, text) {
+    async function sendMaxMessage(userId, text) {
   const token = process.env.MAX_BOT_TOKEN;
 
   if (!token) {
@@ -126,8 +123,21 @@ async function sendMaxMessage(userId, text) {
     );
   }
 
+  console.log(
+    'MAX SEND: отправляем пользователю:',
+    userId
+  );
+
+  const url =
+    `https://platform-api2.max.ru/messages?user_id=${encodeURIComponent(userId)}`;
+
+  console.log(
+    'MAX SEND URL:',
+    url
+  );
+
   const maxResponse = await fetch(
-    `https://platform-api2.max.ru/messages?user_id=${encodeURIComponent(userId)}`,
+    url,
     {
       method: 'POST',
 
@@ -174,6 +184,7 @@ async function sendMaxMessage(userId, text) {
 
   return result;
 }
+
 
 app.use(
   express.static(
