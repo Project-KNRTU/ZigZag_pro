@@ -239,27 +239,29 @@ iframe {
 }
 
 .site-header .logo::after {
-  display: inline-flex;
-  flex-shrink: 0;
-  align-items: center;
-  justify-content: center;
+  display: inline-block;
+  flex: 0 0 24px;
 
-  width: 31px;
-  height: 38px;
-  margin: 0;
+  width: 24px;
+  height: 34px;
+  margin-left: 5px;
 
-  color: #ffffff;
+  background: #ffffff;
 
-  font-family: Arial, sans-serif;
-  font-size: 52px;
-  font-weight: 700;
-  letter-spacing: 0;
-  line-height: 1;
+  clip-path: polygon(
+    58% 0%,
+    8% 57%,
+    43% 57%,
+    27% 100%,
+    94% 35%,
+    57% 35%
+  );
 
-  text-shadow:
-    0 0 14px rgba(213, 208, 255, 0.9);
+  filter: drop-shadow(
+    0 0 8px rgba(213, 208, 255, 0.9)
+  );
 
-  content: "🗲";
+  content: "";
 }
 
 .site-header .header-content > div:first-child::after {
@@ -1335,6 +1337,14 @@ h2 {
     font-size: 27px;
   }
 
+  .site-header .logo::after {
+  flex: 0 0 18px;
+
+  width: 18px;
+  height: 27px;
+  margin-left: 3px;
+}
+
   .city-badge {
     display: none;
   }
@@ -1536,6 +1546,14 @@ h2 {
 
     overflow: visible;
   }
+
+  .site-header .logo::after {
+  flex: 0 0 16px;
+
+  width: 16px;
+  height: 24px;
+  margin-left: 2px;
+}
 }
 
 
