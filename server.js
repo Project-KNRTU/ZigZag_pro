@@ -73,6 +73,7 @@ const chatId =
 
       console.log('MAX MESSAGE:', {
   userId,
+  botUserId: message.recipient?.user_id,
   chatId,
   text
 });
@@ -87,10 +88,9 @@ if (userId) {
 
      
      if (update.update_type === 'bot_started') {
-  const userId =
-    update.user_id ||
-    update.message?.user_id ||
-    update.message?.recipient?.user_id;
+      const userId =
+  message.sender?.user_id ||
+  update.user_id;
 
   if (userId) {
     await sendMaxMessage(
