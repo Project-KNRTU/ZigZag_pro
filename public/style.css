@@ -1499,43 +1499,120 @@ h2 {
   }
 }
 
-/*
-  Small phones.
-*/
+
 @media (max-width: 430px) {
-  .header-content {
+     .header-content {
     min-height: 93px;
+    width: calc(100% - 20px);
   }
 
   .site-header .logo {
-    font-size: 43px;
-    letter-spacing: -3px;
+    font-size: 38px;
+    letter-spacing: -2.5px;
+    gap: 3px;
   }
 
   .site-header .logo::after {
-    width: 23px;
-    height: 28px;
-
-    font-size: 24px;
+    width: 20px;
+    min-width: 20px;
+    height: 25px;
+    font-size: 21px;
   }
 
   .card {
-    padding: 22px 16px;
+    padding: 22px 14px;
   }
 
-  .page-content .card:first-child h2,
-  h2 {
-    font-size: 34px;
-    letter-spacing: -2px;
-  }
-
-  #map,
-  .map {
-    height: 380px !important;
-    min-height: 380px !important;
-  }
-
-  .place-card {
-    padding: 18px;
+  #routeForm {
+    padding: 20px 12px;
   }
 }
+
+
+
+
+@media (max-width: 700px) {
+  #routeForm,
+  #routeForm *,
+  .card,
+  .card * {
+    max-width: 100%;
+  }
+
+  #routeForm {
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+    overflow: hidden;
+  }
+
+  .form-grid,
+  #routeForm .form-grid {
+    width: 100%;
+    min-width: 0;
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .field,
+  #routeForm .field {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .field input,
+  .field select,
+  #routeForm .field input,
+  #routeForm .field select {
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    box-sizing: border-box;
+
+    -webkit-appearance: none;
+    appearance: none;
+  }
+
+  input[type="date"],
+  input[type="time"] {
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+
+  
+  .site-header .logo {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+
+    justify-content: center;
+    gap: 4px;
+
+    font-size: clamp(36px, 13vw, 51px);
+    letter-spacing: -3px;
+    white-space: nowrap;
+  }
+
+  .site-header .logo::after {
+    width: 22px;
+    min-width: 22px;
+    height: 28px;
+
+    margin-left: 2px;
+
+    font-size: 24px;
+    flex-shrink: 0;
+  }
+}
+
+input[type="date"],
+input[type="time"] {
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  box-sizing: border-box;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
