@@ -1,0 +1,253 @@
+version: "1.0"
+
+solution:
+  name: "ZigZag"
+
+api:
+  base_url: "https://YOUR-RENDER-APP.onrender.com"
+
+checks:
+
+  - id: health
+    name: "Проверка доступности API"
+    method: GET
+    path: "/api/health"
+
+    parameters:
+      query: {}
+      path: {}
+      headers: {}
+      body: null
+
+    role: "anonymous"
+
+    expected:
+      status_codes:
+        - 200
+
+      content_type: "application/json"
+
+      response:
+        required:
+          - success
+          - status
+          - message
+
+  - id: places
+    name: "Получение мест"
+    method: GET
+    path: "/api/places"
+
+    parameters:
+      query:
+        categories:
+          type: string
+          required: false
+          example: "restaurant,museum,park"
+
+      path: {}
+
+      headers: {}
+
+      body: null
+
+    role: "anonymous"
+
+    expected:
+      status_codes:
+        - 200
+
+      content_type: "application/json"
+
+      response:
+        required:
+          - success
+          - source
+          - count
+          - places
+
+  - id: events
+    name: "Получение событий"
+    method: GET
+    path: "/api/events"
+
+    parameters:
+      query:
+        date:
+          type: string
+          format: date
+          required: true
+          example: "2026-10-01"
+
+      path: {}
+
+      headers: {}
+
+      body: null
+
+    role: "anonymous"
+
+    expected:
+      status_codes:
+        - 200
+
+      content_type: "application/json"
+
+      response:
+        required:
+          - success
+          - source
+          - visitDate
+          - count
+          - updatedAt
+          - events
+
+  - id: routes-list
+    name: "Получение маршрутов пользователя"
+    method: GET
+    path: "/api/routes"
+
+    parameters:
+      query: {}
+      path: {}
+
+      headers:
+        X-Max-Init-Data:
+          type: string
+          required: true
+          description: "Подписанные данные пользователя MAX"
+
+      body: null
+
+    role: "max_test_user"
+
+    expected:
+      status_codes:
+        - 200
+
+      content_type: "application/json"
+
+      response:
+        required:
+          - success
+          - routes
+
+  - id: route-create
+    name: "Сохранение маршрута"
+    method: POST
+    path: "/api/routes"
+
+    parameters:
+      query: {}
+      path: {}
+
+      headers:
+        X-Max-Init-Data:
+          type: string
+          required: true
+          description: "Подписанные данные пользователя MAX"
+
+        Content-Type:
+          type: string
+          required: true
+          value: "application/json"
+
+      body:
+        content_type: "application/json"
+
+        required:
+          - route
+
+        example:
+          route:
+            - lat: 55.796127
+              lon: 49.106405
+            - lat: 55.790278
+              lon: 49.112735
+
+    role: "max_test_user"
+
+    expected:
+      status_codes:
+        - 201
+
+      content_type: "application/json"
+
+      response:
+        required:
+          - success
+          - message
+          - id
+
+  - id: route-get
+    name: "Получение маршрута"
+    method: GET
+    path: "/api/routes/{id}"
+
+    parameters:
+      query: {}
+
+      path:
+        id:
+          type: integer
+          required: true
+          example: 1
+
+      headers:
+        X-Max-Init-Data:
+          type: string
+          required: true
+
+      body: null
+
+    role: "max_test_user"
+
+    expected:
+      status_codes:
+        - 200
+
+      content_type: "application/json"
+
+      response:
+        required:
+          - success
+          - route
+
+  - id: route-delete
+    name: "Удаление маршрута"
+    method: DELETE
+    path: "/api/routes/{id}"
+
+    parameters:
+      query: {}
+
+      path:
+        id:
+          type: integer
+          required: true
+          example: 1
+
+      headers:
+        X-Max-Init-Data:
+          type: string
+          required: true
+
+      body: null
+
+    role: "max_test_user"
+
+    expected:
+      status_codes:
+        - 200
+
+      content_type: "application/json"
+
+      response:
+        required:
+          - success
+          - message
+
+
+
+
+

@@ -1,0 +1,342 @@
+openapi: 3.1.0
+
+info:
+  title: ZigZag API
+  version: 1.0.0
+  description: API сервиса ZigZag.
+
+servers:
+  - url: https://YOUR-RENDER-APP.onrender.com
+    description: Production
+
+paths:
+
+  /api/health:
+    get:
+      summary: Проверка API
+      operationId: healthCheck
+      responses:
+        '200':
+          description: API работает
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - success
+                  - status
+                  - message
+                properties:
+                  success:
+                    type: boolean
+                  status:
+                    type: string
+                  message:
+                    type: string
+
+  /api/config:
+    get:
+      summary: Получение конфигурации
+      operationId: getConfig
+      responses:
+        '200':
+          description: Конфигурация
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - success
+                  - mapglKey
+                  - directionsKey
+                properties:
+                  success:
+                    type: boolean
+                  mapglKey:
+                    type: string
+                  directionsKey:
+                    type: string
+
+        '500':
+          description: Конфигурация отсутствует
+
+  /api/places:
+    get:
+      summary: Получение мест
+      operationId: getPlaces
+      parameters:
+        - name: categories
+          in: query
+          required: false
+          schema:
+            type: string
+          example: restaurant,museum
+
+      responses:
+        '200':
+          description: Места
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - success
+                  - source
+                  - count
+                  - places
+                properties:
+                  success:
+                    type: boolean
+                  source:
+                    type: string
+                  count:
+                    type: integer
+                  places:
+                    type: array
+                    items:
+                      type: object
+                      additionalProperties: true
+
+        '500':
+          description: Ошибка получения мест
+
+  /api/events:
+    get:
+      summary: Получение событий
+      operationId: getEvents
+
+      parameters:
+        - name: date
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date
+          example: "2026-10-01"
+
+      responses:
+        '200':
+          description: События
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - success
+                  - source
+                  - visitDate
+                  - count
+                  - updatedAt
+                  - events
+                properties:
+                  success:
+                    type: boolean
+                  source:
+                    type: string
+                  visitDate:
+                    type: string
+                    format: date
+                  count:
+                    type: integer
+                  updatedAt:
+                    type: string
+                    format: date-time
+                  events:
+                    type: array
+                    items:
+                      type: object
+                      additionalProperties: true
+
+        '400':
+          description: Некорректная дата
+
+        '500':
+          description: Ошибка получения событий
+
+  /api/routes:
+    get:
+      summary: Получение маршрутов
+      operationId: getRoutes
+
+      security:
+        - maxInitData: []
+
+      responses:
+        '200':
+          description: Маршруты пользователя
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - success
+
+
+- routes
+                properties:
+                  success:
+                    type: boolean
+                  routes:
+                    type: array
+                    items:
+                      type: object
+                      additionalProperties: true
+
+        '401':
+          description: Пользователь MAX не подтверждён
+
+        '500':
+          description: Ошибка получения маршрутов
+
+    post:
+      summary: Сохранение маршрута
+      operationId: saveRoute
+
+      security:
+        - maxInitData: []
+
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - route
+              properties:
+                route:
+                  type: array
+                  minItems: 1
+                  items:
+                    type: object
+                    additionalProperties: true
+              additionalProperties: true
+
+      responses:
+        '201':
+          description: Маршрут сохранён
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - success
+                  - message
+                  - id
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                  id:
+                    type: integer
+
+        '400':
+          description: Некорректные данные
+
+        '401':
+          description: Пользователь MAX не подтверждён
+
+        '500':
+          description: Ошибка сохранения
+
+  /api/routes/{id}:
+    get:
+      summary: Получение маршрута
+      operationId: getRouteById
+
+      security:
+        - maxInitData: []
+
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+
+      responses:
+        '200':
+          description: Маршрут
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - success
+                  - route
+                properties:
+                  success:
+                    type: boolean
+                  route:
+                    type: object
+                    additionalProperties: true
+
+        '400':
+          description: Некорректный ID
+
+        '401':
+          description: Пользователь MAX не подтверждён
+
+        '404':
+          description: Маршрут не найден
+
+        '500':
+          description: Ошибка
+
+    delete:
+      summary: Удаление маршрута
+      operationId: deleteRoute
+
+      security:
+        - maxInitData: []
+
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+
+      responses:
+        '200':
+          description: Маршрут удалён
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - success
+                  - message
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+
+        '400':
+          description: Некорректный ID
+
+        '401':
+          description: Пользователь MAX не подтверждён
+
+        '404':
+          description: Маршрут не найден
+
+        '500':
+          description: Ошибка
+
+components:
+
+  securitySchemes:
+
+    maxInitData:
+      type: apiKey
+      in: header
+      name: X-Max-Init-Data
+      description: >
+        Подписанные данные пользователя MAX WebApp.
+        Сервер проверяет подпись через BOT_TOKEN,
+        проверяет auth_date и извлекает идентификатор пользователя.

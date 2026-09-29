@@ -175,12 +175,6 @@ async function getPlacesByCategory(categoryName) {
     return cachedPlaces;
   }
 
-  /*
-    Используем /3.0/items, а не /3.0/markers.
-
-    /items возвращает реальные данные объекта:
-    название, адрес, рубрики и координаты.
-  */
   const requestUrl = new URL(
     'https://catalog.api.2gis.com/3.0/items'
   );
@@ -205,11 +199,6 @@ async function getPlacesByCategory(categoryName) {
     '25000'
   );
 
-  /*
-    ВАЖНО:
-    API в вашем тарифе/endpoint принимает
-    page_size только от 1 до 10.
-  */
   requestUrl.searchParams.set(
     'page_size',
     '10'
@@ -228,11 +217,6 @@ async function getPlacesByCategory(categoryName) {
     ].join(',')
   );
 
-  /*
-    Для кафе, музеев и ТЦ ищем организации.
-    Для парков и достопримечательностей
-    type не задаём: это могут быть городские объекты.
-  */
   if (category.objectType) {
     requestUrl.searchParams.set(
       'type',
@@ -301,12 +285,6 @@ async function getPlacesByCategory(categoryName) {
 
       const coords = getCoordinates(item);
 
-      /*
-        Никогда не показываем вымышленные места.
-
-        Если 2ГИС не передал название или координаты,
-        объект не попадёт в список пользователя.
-      */
       if (!name || !coords) {
         console.warn(
           ' 2ГИС: объект пропущен',
@@ -346,10 +324,6 @@ async function getPlacesByCategory(categoryName) {
 
         durationMin: category.durationMin,
 
-        /*
-          Оценка ZigZag для построения бюджета.
-          Это не стоимость, переданная 2ГИС.
-        */
         cost: category.cost,
 
         source: '2GIS',
@@ -615,11 +589,6 @@ async function getEvents(visitDate) {
     'kzn'
   );
 
-  /*
-    ВАЖНО:
-    У API в вашем ответе page_size
-    ограничен максимумом в 10 событий.
-  */
   requestUrl.searchParams.set(
     'page_size',
     '10'
@@ -705,10 +674,6 @@ async function getEvents(visitDate) {
         event.short_title
       );
 
-      /*
-        Не показываем пустые и неидентифицируемые
-        записи как реальные мероприятия.
-      */
       if (!name) {
         return null;
       }

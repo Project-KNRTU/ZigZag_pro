@@ -3,31 +3,14 @@ const path = require('node:path');
 
 const Database = require('better-sqlite3');
 
-/*
-  Если DB_PATH есть в .env:
-  ./data/zigzag.db
-
-  База будет храниться в папке проекта:
-  ZigZag_pro/data/zigzag.db
-
-  Если переменной нет:
-  ZigZag_pro/zigzag.db
-*/
 const databasePath = process.env.DB_PATH
   ? path.resolve(process.env.DB_PATH)
   : path.join(__dirname, 'zigzag.db');
 
-/*
-  Получаем папку, где должна лежать база.
-*/
 const databaseDirectory = path.dirname(
   databasePath
 );
 
-/*
-  Создаём папку автоматически,
-  если её ещё нет.
-*/
 fs.mkdirSync(databaseDirectory, {
   recursive: true
 });
@@ -38,11 +21,6 @@ console.log(
 
 const db = new Database(databasePath);
 
-/*
-  Таблица сохранённых маршрутов.
-
-  user_id — настоящий ID пользователя MAX.
-*/
 db.exec(`
   CREATE TABLE IF NOT EXISTS routes (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -57,9 +35,6 @@ db.exec(`
   );
 `);
 
-/*
-  Сохранение маршрута.
-*/
 function saveRoute(userId, routeData) {
   if (!userId) {
     throw new Error(
@@ -91,9 +66,6 @@ function saveRoute(userId, routeData) {
   );
 }
 
-/*
-  Список маршрутов текущего пользователя.
-*/
 function getRoutes(userId) {
   if (!userId) {
     throw new Error(
@@ -128,13 +100,6 @@ function getRoutes(userId) {
   });
 }
 
-/*
-  Один маршрут по ID.
-
-  Одновременно проверяем user_id,
-  чтобы пользователь не мог открыть
-  чужой маршрут.
-*/
 function getRouteById(userId, routeId) {
   if (!userId) {
     throw new Error(
@@ -172,12 +137,6 @@ function getRouteById(userId, routeId) {
   };
 }
 
-/*
-  Удаление маршрута.
-
-  Удалить можно только маршрут
-  текущего пользователя.
-*/
 function deleteRoute(userId, routeId) {
   if (!userId) {
     throw new Error(

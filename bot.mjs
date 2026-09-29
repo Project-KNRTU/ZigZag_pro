@@ -28,9 +28,6 @@ if (!WEB_APP_URL) {
 const bot = new Bot(BOT_TOKEN);
 
 
-/*
-  Клавиатура с кнопкой открытия ZigZag.
-*/
 function getMainKeyboard() {
   return Keyboard.inlineKeyboard([
     [
@@ -43,9 +40,6 @@ function getMainKeyboard() {
 }
 
 
-/*
-  Пользователь впервые запускает бота.
-*/
 bot.command('start', async (ctx) => {
   await ctx.reply(
     [
@@ -66,9 +60,7 @@ bot.command('start', async (ctx) => {
 });
 
 
-/*
-  Бот отвечает на любое обычное сообщение.
-*/
+
 bot.on('message_created', async (ctx) => {
   const text = ctx.message?.body?.text?.trim();
 

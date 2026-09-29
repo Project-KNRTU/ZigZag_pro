@@ -1,0 +1,23 @@
+{
+  "routes": [
+    {
+      "name": "Тестовый маршрут",
+      "route": [
+        {
+          "lat": 55.796127,
+          "lon": 49.106405
+        },
+        {
+          "lat": 55.790278,
+          "lon": 49.112735
+        }
+      ]
+    }
+  ],
+  "events": {
+    "date": "2026-10-01"
+  },
+  "places": {
+    "categories": "restaurant,museum,park"
+  }
+}

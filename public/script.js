@@ -1,18 +1,10 @@
 let MAPGL_KEY = '';
 let DIRECTIONS_KEY = '';
 
-/*
-  Безопасно получаем объект мини-приложения MAX.
-
-  В обычном браузере window.WebApp отсутствует,
-  поэтому сайт продолжит работать и вне MAX.
-*/
 const maxWebApp = window.WebApp || null;
 
 
-/*
-  Настраивает поведение приложения внутри MAX.
-*/
+
 function initializeMaxApp() {
   if (!maxWebApp) {
     console.log('ZigZag открыт в обычном браузере.');
@@ -25,15 +17,10 @@ function initializeMaxApp() {
     maxWebApp.platform
   );
 
-  /*
-    Предупреждает пользователя при попытке закрыть
-    приложение с незаполненной формой.
-  */
+  
   maxWebApp.enableClosingConfirmation?.();
 
-  /*
-    Даёт лёгкий тактильный отклик на телефоне MAX.
-  */
+   
   maxWebApp.HapticFeedback?.impactOccurred?.(
     'light'
   );
@@ -90,14 +77,7 @@ async function requestApi(url, options = {}) {
     options.headers
   );
 
-  /*
-    MAX передаёт подписанные данные
-    пользователя через WebApp.initData.
-
-    Мы отправляем исходную строку на сервер.
-    Сервер самостоятельно проверяет её подпись
-    и определяет user.id.
-  */
+   
   const initData =
     window.WebApp?.initData;
 

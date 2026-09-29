@@ -2,14 +2,6 @@
   'https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Syne:wght@600;700;800&display=swap'
 );
 
-
-/*
-  ==========================================
-  ZIGZAG — BLUE GLASS MOBILE APP DESIGN
-  ==========================================
-*/
-
-
 :root {
   --bg-deep: #080763;
   --bg: #15138f;
@@ -39,22 +31,25 @@
   --shadow: 0 24px 65px rgba(0, 0, 0, 0.26);
 }
 
-
-* {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
 }
 
-
 html {
+  width: 100%;
+  min-height: 100%;
   scroll-behavior: smooth;
 }
 
-
 body {
+  position: relative;
+
+  width: 100%;
   min-width: 320px;
   min-height: 100vh;
   margin: 0;
-
   overflow-x: hidden;
 
   color: var(--text);
@@ -64,1588 +59,6 @@ body {
     Inter,
     Arial,
     sans-serif;
-
-  background:
-    radial-gradient(
-      circle at 78% 12%,
-      rgba(119, 108, 255, 0.44),
-      transparent 25%
-    ),
-    radial-gradient(
-      circle at 8% 78%,
-      rgba(66, 82, 255, 0.3),
-      transparent 28%
-    ),
-    linear-gradient(
-      135deg,
-      var(--bg-deep) 0%,
-      var(--bg) 48%,
-      var(--bg-light) 100%
-    );
-}
-
-
-body::before {
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-
-  opacity: 0.45;
-
-  background-image:
-    linear-gradient(
-      rgba(255, 255, 255, 0.08) 1px,
-      transparent 1px
-    ),
-    linear-gradient(
-      90deg,
-      rgba(255, 255, 255, 0.08) 1px,
-      transparent 1px
-    );
-
-  background-size: 150px 150px;
-
-  content: "";
-
-  pointer-events: none;
-}
-
-
-body::after {
-  position: fixed;
-  top: 145px;
-  right: -180px;
-  z-index: -1;
-
-  width: 430px;
-  height: 430px;
-
-  border-radius: 45% 55% 60% 40%;
-
-  background: linear-gradient(
-    145deg,
-    rgba(148, 139, 255, 0.55),
-    rgba(73, 67, 255, 0.04)
-  );
-
-  filter: blur(2px);
-  transform: rotate(24deg);
-
-  content: "";
-
-  pointer-events: none;
-}
-
-
-button,
-input,
-select {
-  font: inherit;
-}
-
-
-button {
-  cursor: pointer;
-}
-
-
-/*
-  ==========================================
-  ШАПКА
-  ==========================================
-*/
-
-
-.site-header {
-  position: relative;
-  z-index: 10;
-
-  width: 100%;
-}
-
-
-.header-content {
-  position: relative;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  width: min(1180px, calc(100% - 48px));
-  min-height: 122px;
-  margin: 0 auto;
-  padding: 28px 0 18px;
-
-  text-align: center;
-}
-
-
-.header-content > div:first-child {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-
-.logo {
-  margin: 0;
-
-  color: #ffffff;
-
-  font-family: "Syne", sans-serif;
-  font-size: clamp(42px, 6vw, 68px);
-  font-weight: 800;
-  letter-spacing: -4px;
-  line-height: 0.9;
-  text-transform: uppercase;
-}
-
-
-.logo::after {
-  color: #bdb9ff;
-
-  content: ".";
-}
-
-
-.tagline {
-  margin: 10px 0 0;
-
-  color: rgba(255, 255, 255, 0.62);
-
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.13em;
-  text-transform: uppercase;
-}
-
-
-.city-badge {
-  position: absolute;
-  top: 50%;
-  right: 0;
-
-  padding: 8px 12px;
-
-  transform: translateY(-50%);
-
-  border: 1px solid var(--line);
-  border-radius: 999px;
-
-  color: rgba(255, 255, 255, 0.9);
-
-  background: rgba(255, 255, 255, 0.1);
-
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-
-
-/*
-  ==========================================
-  ОСНОВНОЕ СОДЕРЖИМОЕ
-  ==========================================
-*/
-
-
-.page-content {
-  width: min(1180px, calc(100% - 48px));
-  margin: 0 auto;
-  padding: 10px 0 35px;
-}
-
-
-.card {
-  position: relative;
-
-  overflow: hidden;
-
-  margin-bottom: 28px;
-  padding: clamp(25px, 4vw, 42px);
-
-  border: 1px solid var(--line);
-  border-radius: var(--radius-large);
-
-  background: linear-gradient(
-    145deg,
-    rgba(255, 255, 255, 0.11),
-    rgba(255, 255, 255, 0.035)
-  );
-
-  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.18);
-  backdrop-filter: blur(18px);
-}
-
-
-.card:first-child {
-  min-height: 465px;
-
-  background:
-    radial-gradient(
-      circle at 88% 15%,
-      rgba(133, 124, 255, 0.4),
-      transparent 34%
-    ),
-    linear-gradient(
-      145deg,
-      rgba(255, 255, 255, 0.12),
-      rgba(255, 255, 255, 0.04)
-    );
-}
-
-
-
-
-.card > * {
-  position: relative;
-  z-index: 1;
-}
-
-
-.section-title-row {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 18px;
-
-  margin-bottom: 22px;
-}
-
-
-.section-label {
-  margin: 0 0 9px;
-
-  color: rgba(255, 255, 255, 0.58);
-
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-}
-
-
-h2 {
-  margin: 0;
-
-  color: #ffffff;
-
-  font-family: "Syne", sans-serif;
-  font-size: clamp(34px, 5vw, 62px);
-  font-weight: 800;
-  letter-spacing: -3px;
-  line-height: 0.92;
-  text-transform: uppercase;
-}
-
-
-.section-description {
-  max-width: 670px;
-  margin: 0 0 20px;
-
-  color: var(--muted);
-
-  font-size: 14px;
-  line-height: 1.6;
-}
-
-
-.count-badge {
-  display: inline-flex;
-  align-items: center;
-
-  min-height: 32px;
-  padding: 6px 12px;
-
-  border: 1px solid var(--line);
-  border-radius: 999px;
-
-  color: rgba(255, 255, 255, 0.78);
-
-  background: rgba(255, 255, 255, 0.07);
-
-  font-size: 11px;
-  font-weight: 700;
-  white-space: nowrap;
-}
-
-
-#serverStatus {
-  display: none !important;
-}
-
-
-/*
-  ==========================================
-  ФОРМА «НАСТРОЙТЕ ПРОГУЛКУ»
-  ==========================================
-*/
-
-
-#routeForm {
-  display: grid;
-  gap: 18px;
-
-  max-width: 900px;
-}
-
-
-.form-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 16px;
-}
-
-
-.form-grid-full {
-  grid-column: 1 / -1;
-}
-
-
-.field {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-
-  color: rgba(255, 255, 255, 0.72);
-
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-}
-
-
-.field input,
-.field select {
-  width: 100%;
-  min-height: 54px;
-  padding: 13px 16px;
-
-  border: 1px solid var(--line);
-  border-radius: 16px;
-  outline: none;
-
-  color: #ffffff;
-
-  background: var(--glass-dark);
-
-  font-size: 15px;
-  font-weight: 600;
-
-  transition: 0.2s ease;
-}
-
-
-.field select option {
-  color: #111111;
-
-  background: #ffffff;
-}
-
-
-.field input:focus,
-.field select:focus {
-  border-color: rgba(255, 255, 255, 0.72);
-
-  box-shadow: 0 0 0 4px rgba(127, 117, 255, 0.2);
-}
-
-
-.interests {
-  margin: 0;
-  padding: 16px;
-
-  border: 1px solid var(--line);
-  border-radius: 18px;
-
-  background: rgba(255, 255, 255, 0.05);
-}
-
-
-.interests legend {
-  padding: 0 7px;
-
-  color: rgba(255, 255, 255, 0.72);
-
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-}
-
-
-.interest-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-}
-
-
-.check-label {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-
-  min-height: 42px;
-  padding: 9px 14px;
-
-  border: 1px solid var(--line);
-  border-radius: 999px;
-
-  color: rgba(255, 255, 255, 0.85);
-
-  background: rgba(255, 255, 255, 0.06);
-
-  font-size: 13px;
-  font-weight: 600;
-
-  cursor: pointer;
-
-  transition: 0.2s ease;
-}
-
-
-.check-label:hover {
-  border-color: var(--line-strong);
-
-  background: var(--glass-hover);
-}
-
-
-.check-label:has(input:checked) {
-  border-color: #ffffff;
-
-  color: var(--accent-text);
-
-  background: #ffffff;
-}
-
-
-.check-label input {
-  width: auto;
-  min-height: auto;
-
-  accent-color: #7067ff;
-}
-
-
-.primary-button,
-.secondary-button {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-
-  min-height: 52px;
-  padding: 13px 22px;
-
-  border-radius: 999px;
-
-  font-size: 12px;
-  font-weight: 800;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-
-  transition: 0.2s ease;
-}
-
-
-.primary-button {
-  width: fit-content;
-  min-width: 285px;
-
-  border: 1px solid #ffffff;
-
-  color: var(--accent-text);
-
-  background: #ffffff;
-
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.17);
-}
-
-
-.primary-button:hover {
-  transform: translateY(-3px);
-
-  background: #e9e8ff;
-
-  box-shadow: 0 18px 35px rgba(0, 0, 0, 0.25);
-}
-
-
-.secondary-button {
-  border: 1px solid var(--line);
-
-  color: #ffffff;
-
-  background: rgba(255, 255, 255, 0.08);
-}
-
-
-.secondary-button:hover {
-  border-color: var(--line-strong);
-
-  background: rgba(255, 255, 255, 0.16);
-}
-
-
-.primary-button:disabled,
-.secondary-button:disabled {
-  cursor: not-allowed;
-  opacity: 0.55;
-}
-
-
-.info-message {
-  margin-top: 15px;
-  padding: 13px 15px;
-
-  border: 1px solid var(--line);
-  border-radius: var(--radius-small);
-
-  color: rgba(255, 255, 255, 0.78);
-
-  background: rgba(255, 255, 255, 0.07);
-
-  font-size: 13px;
-  line-height: 1.5;
-}
-
-
-.info-message.is-success {
-  border-color: rgba(185, 178, 255, 0.55);
-
-  color: #ffffff;
-
-  background: rgba(112, 103, 255, 0.28);
-}
-
-
-.info-message.is-error {
-  border-color: rgba(255, 151, 165, 0.56);
-
-  color: #ffd6dc;
-
-  background: rgba(177, 30, 59, 0.2);
-}
-
-
-/*
-  ==========================================
-  МЕСТА, МАРШРУТЫ И АФИША
-  ==========================================
-*/
-
-
-.places-list,
-.route-list,
-.events-list,
-.saved-routes {
-  display: grid;
-  gap: 15px;
-
-  margin-top: 18px;
-}
-
-
-#places {
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-}
-
-
-.place-card,
-.route-card,
-.event-card,
-.saved-route-card {
-  border: 1px solid var(--line);
-  border-radius: 22px;
-
-  color: #ffffff;
-
-  background: rgba(255, 255, 255, 0.06);
-
-  transition: 0.22s ease;
-}
-
-
-.place-card {
-  position: relative;
-
-  min-height: 240px;
-  padding: 22px;
-
-  overflow: hidden;
-
-  cursor: pointer;
-}
-
-
-.place-card::before {
-  position: absolute;
-  top: -50px;
-  right: -45px;
-
-  width: 135px;
-  height: 135px;
-
-  border-radius: 50%;
-
-  background: rgba(141, 133, 255, 0.19);
-
-  content: "";
-}
-
-
-.place-card:hover {
-  transform: translateY(-6px);
-
-  border-color: var(--line-strong);
-
-  background: rgba(255, 255, 255, 0.11);
-}
-
-
-.place-card.is-selected {
-  border-color: rgba(255, 255, 255, 0.85);
-
-  background:
-    radial-gradient(
-      circle at 86% 8%,
-      rgba(142, 133, 255, 0.5),
-      transparent 38%
-    ),
-    rgba(255, 255, 255, 0.13);
-}
-
-
-.card-title,
-.event-card h3,
-.saved-route-card h3 {
-  position: relative;
-
-  margin: 0;
-
-  color: #ffffff;
-
-  font-family: "Syne", sans-serif;
-  font-size: 21px;
-  font-weight: 700;
-  letter-spacing: -0.8px;
-  line-height: 1;
-}
-
-
-.card-description,
-.event-card p {
-  position: relative;
-
-  margin: 12px 0;
-
-  color: var(--muted);
-
-  font-size: 13px;
-  line-height: 1.55;
-}
-
-
-.card-meta {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 7px;
-
-  color: rgba(255, 255, 255, 0.69);
-
-  font-size: 12px;
-  font-weight: 500;
-  line-height: 1.45;
-}
-
-
-.type-badge {
-  display: inline-flex;
-  flex-shrink: 0;
-
-  padding: 5px 8px;
-
-  border: 1px solid var(--line);
-  border-radius: 999px;
-
-  color: rgba(255, 255, 255, 0.78);
-
-  background: rgba(255, 255, 255, 0.09);
-
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-}
-
-
-/*
-  ==========================================
-  КАРТА
-  ==========================================
-*/
-
-
-#map,
-.map {
-  display: block;
-
-  width: 100% !important;
-  height: 560px !important;
-  min-height: 560px !important;
-
-  overflow: hidden;
-
-  border: 1px solid rgba(255, 255, 255, 0.26);
-  border-radius: 24px;
-
-  background: #17158d;
-
-  box-shadow:
-    0 22px 60px rgba(0, 0, 0, 0.24),
-    inset 0 1px 0 rgba(255, 255, 255, 0.1);
-}
-
-
-.route-card {
-  display: flex;
-  align-items: flex-start;
-  gap: 12px;
-
-  padding: 16px;
-}
-
-
-.route-number {
-  display: inline-grid;
-  flex-shrink: 0;
-  place-items: center;
-
-  width: 36px;
-  height: 36px;
-
-  border-radius: 50%;
-
-  color: var(--accent-text);
-
-  background: #ffffff;
-
-  font-size: 13px;
-  font-weight: 800;
-}
-
-
-.route-card-content {
-  flex: 1;
-}
-
-
-.route-actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 11px;
-
-  margin-top: 18px;
-}
-
-
-.route-actions .primary-button,
-.route-actions .secondary-button {
-  flex: 1;
-  min-width: 230px;
-}
-
-
-.event-card {
-  padding: 21px;
-}
-
-
-.event-link {
-  display: inline-flex;
-
-  margin-top: 12px;
-
-  color: #d3cfff;
-
-  font-size: 12px;
-  font-weight: 700;
-  text-decoration: underline;
-}
-
-
-.saved-route-card {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 15px;
-
-  padding: 16px;
-}
-
-
-.saved-route-date {
-  margin: 7px 0 0;
-
-  color: var(--muted);
-
-  font-size: 12px;
-}
-
-
-.delete-route-button {
-  flex-shrink: 0;
-
-  padding: 9px 11px;
-
-  border: 1px solid rgba(255, 160, 172, 0.5);
-  border-radius: 10px;
-
-  color: #ffd4da;
-
-  background: rgba(170, 25, 54, 0.18);
-
-  font-size: 11px;
-  font-weight: 700;
-}
-
-
-.empty-state {
-  padding: 24px;
-
-  border: 1px dashed var(--line);
-  border-radius: 16px;
-
-  color: var(--muted);
-
-  text-align: center;
-}
-
-
-/*
-  ==========================================
-  FOOTER
-  ==========================================
-*/
-
-
-.site-footer {
-  width: min(1180px, calc(100% - 48px));
-  margin: 0 auto;
-  padding: 8px 0 38px;
-
-  border-top: 1px solid var(--line);
-
-  color: rgba(255, 255, 255, 0.5);
-
-  font-size: 12px;
-  text-align: center;
-}
-
-
-.site-footer p {
-  margin: 7px 0;
-}
-
-
-/*
-  ==========================================
-  ПЛАНШЕТ
-  ==========================================
-*/
-
-
-@media (max-width: 900px) {
-  #places {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  #map,
-  .map {
-    height: 500px !important;
-    min-height: 500px !important;
-  }
-}
-
-
-/*
-  ==========================================
-  ТЕЛЕФОН
-  ==========================================
-*/
-
-
-@media (max-width: 700px) {
-  .header-content {
-    width: calc(100% - 28px);
-    min-height: 104px;
-    padding: 23px 0 16px;
-  }
-
-  .logo {
-    font-size: 46px;
-  }
-
-  .city-badge {
-    display: none;
-  }
-
-  .page-content {
-    width: calc(100% - 28px);
-    padding-top: 5px;
-  }
-
-  .card {
-    margin-bottom: 18px;
-    padding: 24px 20px;
-
-    border-radius: 24px;
-  }
-
-  .card:first-child {
-    min-height: auto;
-  }
-
-  h2 {
-    font-size: 38px;
-  }
-
-  .form-grid {
-    grid-template-columns: 1fr;
-    gap: 13px;
-  }
-
-  .form-grid-full {
-    grid-column: auto;
-  }
-
-  .interest-list {
-    gap: 8px;
-  }
-
-  .check-label {
-    width: 100%;
-    justify-content: flex-start;
-  }
-
-  .primary-button {
-    width: 100%;
-    min-width: 0;
-  }
-
-  #places {
-    grid-template-columns: 1fr;
-  }
-
-  .place-card {
-    min-height: 200px;
-  }
-
-  #map,
-  .map {
-    height: 460px !important;
-    min-height: 460px !important;
-
-    border-radius: 20px;
-  }
-
-  .route-actions {
-    flex-direction: column;
-  }
-
-  .route-actions .primary-button,
-  .route-actions .secondary-button {
-    width: 100%;
-    min-width: 0;
-  }
-
-  .saved-route-card {
-    flex-direction: column;
-  }
-
-  .delete-route-button {
-    width: 100%;
-  }
-
-  .site-footer {
-    width: calc(100% - 28px);
-  }
-}
-
-
-@media (max-width: 430px) {
-  .header-content {
-    min-height: 93px;
-  }
-
-  .logo {
-    font-size: 40px;
-  }
-
-  .card {
-    padding: 22px 16px;
-  }
-
-  h2 {
-    font-size: 32px;
-    letter-spacing: -2px;
-  }
-
-  #map,
-  .map {
-    height: 380px !important;
-    min-height: 380px !important;
-  }
-
-  .place-card {
-    padding: 18px;
-  }
-}
-
-/*
-  ==========================================
-  ЦЕНТРАЛЬНАЯ ФОРМА НАСТРОЙКИ МАРШРУТА
-  Вставить в самый конец style.css
-  ==========================================
-*/
-
-
-/*
-  Сам блок формы находится по центру
-  внутри первой карточки «Настройте прогулку».
-*/
-#routeForm {
-  position: relative;
-
-  width: min(100%, 780px);
-  margin: 28px auto 0;
-  padding: clamp(22px, 4vw, 38px);
-
-  border: 1px solid rgba(255, 255, 255, 0.32);
-  border-radius: 26px;
-
-  background:
-    linear-gradient(
-      145deg,
-      rgba(255, 255, 255, 0.16),
-      rgba(255, 255, 255, 0.055)
-    );
-
-  box-shadow:
-    0 24px 55px rgba(0, 0, 0, 0.22),
-    inset 0 1px 0 rgba(255, 255, 255, 0.16);
-
-  backdrop-filter: blur(20px);
-}
-
-
-/*
-  Тонкая декоративная линия вверху формы.
-*/
-#routeForm::before {
-  position: absolute;
-  top: 0;
-  left: 50%;
-
-  width: 110px;
-  height: 3px;
-
-  border-radius: 0 0 999px 999px;
-
-  background: #ffffff;
-
-  box-shadow: 0 4px 16px rgba(255, 255, 255, 0.45);
-
-  content: "";
-
-  transform: translateX(-50%);
-}
-
-
-/*
-  Сетка полей.
-*/
-#routeForm .form-grid {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 18px;
-}
-
-
-/*
-  Название полей.
-*/
-#routeForm .field {
-  gap: 9px;
-
-  color: rgba(255, 255, 255, 0.75);
-
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.13em;
-  text-transform: uppercase;
-}
-
-
-/*
-  Поля и select.
-*/
-#routeForm .field input,
-#routeForm .field select {
-  min-height: 56px;
-  padding: 0 17px;
-
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 15px;
-
-  color: #ffffff;
-
-  background:
-    linear-gradient(
-      135deg,
-      rgba(5, 5, 75, 0.45),
-      rgba(79, 70, 194, 0.23)
-    );
-
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.06),
-    0 8px 20px rgba(0, 0, 0, 0.09);
-
-  font-size: 15px;
-  font-weight: 600;
-
-  transition:
-    border-color 0.2s ease,
-    background 0.2s ease,
-    box-shadow 0.2s ease;
-}
-
-
-#routeForm .field input:hover,
-#routeForm .field select:hover {
-  border-color: rgba(255, 255, 255, 0.4);
-
-  background:
-    linear-gradient(
-      135deg,
-      rgba(8, 7, 91, 0.55),
-      rgba(91, 81, 215, 0.3)
-    );
-}
-
-
-#routeForm .field input:focus,
-#routeForm .field select:focus {
-  border-color: rgba(255, 255, 255, 0.9);
-
-  box-shadow:
-    0 0 0 4px rgba(145, 136, 255, 0.23),
-    inset 0 1px 0 rgba(255, 255, 255, 0.1);
-}
-
-
-#routeForm .field select option {
-  color: #17158d;
-
-  background: #ffffff;
-}
-
-
-/*
-  Рамка выбора интересов.
-*/
-#routeForm .interests {
-  margin: 4px 0 0;
-  padding: 18px;
-
-  border: 1px solid rgba(255, 255, 255, 0.17);
-  border-radius: 18px;
-
-  background: rgba(0, 0, 70, 0.16);
-}
-
-
-#routeForm .interests legend {
-  padding: 0 8px;
-
-  color: rgba(255, 255, 255, 0.76);
-
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.13em;
-  text-transform: uppercase;
-}
-
-
-/*
-  Переключатели интересов.
-*/
-#routeForm .interest-list {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 10px;
-}
-
-
-#routeForm .check-label {
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-
-  width: 100%;
-  min-height: 48px;
-  padding: 10px 13px;
-
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  border-radius: 13px;
-
-  color: rgba(255, 255, 255, 0.82);
-
-  background: rgba(255, 255, 255, 0.055);
-
-  font-size: 13px;
-  font-weight: 600;
-
-  transition:
-    transform 0.2s ease,
-    border-color 0.2s ease,
-    background 0.2s ease;
-}
-
-
-#routeForm .check-label:hover {
-  transform: translateY(-2px);
-
-  border-color: rgba(255, 255, 255, 0.48);
-
-  background: rgba(255, 255, 255, 0.12);
-}
-
-
-#routeForm .check-label:has(input:checked) {
-  border-color: #ffffff;
-
-  color: #17158d;
-
-  background: #ffffff;
-
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.14);
-}
-
-
-#routeForm .check-label input {
-  flex-shrink: 0;
-
-  width: 17px;
-  height: 17px;
-
-  accent-color: #7067ff;
-}
-
-
-/*
-  Главная кнопка построения маршрута.
-*/
-#findPlacesButton {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  width: min(100%, 420px);
-  min-height: 56px;
-  margin: 6px auto 0;
-  padding: 15px 22px;
-
-  border: 1px solid #ffffff;
-  border-radius: 999px;
-
-  color: #17158d;
-
-  background: #ffffff;
-
-  box-shadow:
-    0 16px 30px rgba(0, 0, 0, 0.2),
-    inset 0 1px 0 rgba(255, 255, 255, 0.7);
-
-  font-size: 12px;
-  font-weight: 800;
-  letter-spacing: 0.06em;
-  text-align: center;
-  text-transform: uppercase;
-}
-
-
-#findPlacesButton::after {
-  margin-left: 10px;
-
-  font-size: 18px;
-  line-height: 1;
-
-  content: "→";
-}
-
-
-#findPlacesButton:hover {
-  transform: translateY(-3px);
-
-  border-color: #ffffff;
-
-  background: #e9e7ff;
-
-  box-shadow:
-    0 22px 35px rgba(0, 0, 0, 0.26),
-    0 0 22px rgba(204, 199, 255, 0.25);
-}
-
-
-#findPlacesButton:active {
-  transform: translateY(0);
-}
-
-
-/*
-  Телефон.
-*/
-@media (max-width: 700px) {
-  #routeForm {
-    width: 100%;
-    margin-top: 22px;
-    padding: 22px 16px;
-
-    border-radius: 21px;
-  }
-
-  #routeForm .form-grid {
-    grid-template-columns: 1fr;
-    gap: 14px;
-  }
-
-  #routeForm .interest-list {
-    grid-template-columns: 1fr;
-  }
-
-  #routeForm .check-label {
-    min-height: 46px;
-  }
-
-  #findPlacesButton {
-    width: 100%;
-  }
-}
-
-/*
-  ==========================================
-  ЦЕНТРИРОВАННЫЙ ЗАГОЛОВОК И ЛОГОТИП ZIGZAG
-  Вставить в самый конец style.css
-  ==========================================
-*/
-
-
-/*
-  Первый блок страницы — «Настройте прогулку».
-*/
-.page-content .card:first-child .section-title-row {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-
-  margin-bottom: 10px;
-
-  text-align: center;
-}
-
-
-.page-content .card:first-child .section-title-row > div {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-
-.page-content .card:first-child .section-label {
-  margin-bottom: 12px;
-
-  color: rgba(255, 255, 255, 0.62);
-
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.18em;
-  text-align: center;
-}
-
-
-.page-content .card:first-child h2 {
-  max-width: 720px;
-
-  color: #ffffff;
-
-  font-family: "Syne", sans-serif;
-  font-size: clamp(38px, 6vw, 68px);
-  font-weight: 800;
-  letter-spacing: -4px;
-  line-height: 0.9;
-  text-align: center;
-  text-transform: uppercase;
-}
-
-
-.page-content .card:first-child h2::after {
-  display: block;
-
-  width: 68px;
-  height: 3px;
-  margin: 20px auto 0;
-
-  border-radius: 999px;
-
-  background: linear-gradient(
-    90deg,
-    transparent,
-    #ffffff,
-    transparent
-  );
-
-  box-shadow: 0 0 18px rgba(255, 255, 255, 0.6);
-
-  content: "";
-}
-
-
-/*
-  Логотип ZigZag.
-*/
-.site-header .logo {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-
-  color: #ffffff;
-
-  font-family: "Syne", sans-serif;
-  font-size: clamp(46px, 7vw, 76px);
-  font-weight: 800;
-  letter-spacing: -5px;
-  line-height: 0.85;
-  text-transform: uppercase;
-
-  text-shadow:
-    0 4px 20px rgba(0, 0, 0, 0.2),
-    0 0 30px rgba(167, 159, 255, 0.3);
-}
-
-
-/*
-  Убираем предыдущую точку после ZigZag
-  и добавляем красивую молнию.
-*/
-.site-header .logo::after {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-
-  width: 31px;
-  height: 38px;
-
-  margin: 0;
-
-  color: #ffffff;
-
-  font-family: Arial, sans-serif;
-  font-size: 52px;
-  font-weight: 700;
-  letter-spacing: 0;
-
-  text-shadow:
-    0 0 14px rgba(213, 208, 255, 0.9);
-
-  content: "🗲";
-}
-
-
-/*
-  Небольшая световая линия под логотипом.
-*/
-.site-header .header-content > div:first-child::after {
-  width: 90px;
-  height: 2px;
-  margin-top: 13px;
-
-  border-radius: 999px;
-
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(255, 255, 255, 0.95),
-    transparent
-  );
-
-  box-shadow: 0 0 16px rgba(190, 183, 255, 0.7);
-
-  content: "";
-}
-
-
-/*
-  Мобильная версия.
-*/
-@media (max-width: 700px) {
-  .site-header .logo {
-    gap: 7px;
-
-    font-size: 51px;
-    letter-spacing: -4px;
-  }
-
-  .site-header .logo::after {
-    width: 26px;
-    height: 32px;
-
-    font-size: 27px;
-  }
-
-  .page-content .card:first-child h2 {
-    font-size: 42px;
-    letter-spacing: -3px;
-  }
-}
-
-
-@media (max-width: 430px) {
-  .site-header .logo {
-    font-size: 43px;
-    letter-spacing: -3px;
-  }
-
-  .site-header .logo::after {
-    font-size: 24px;
-  }
-
-  .page-content .card:first-child h2 {
-    font-size: 34px;
-    letter-spacing: -2px;
-  }
-}
-
-
-
-/* =========================================================
-   ZIGZAG — ФОНОВЫЕ ФИГУРЫ / TRAVEL ROUTE STYLE
-   Добавить в самый конец style.css
-   ========================================================= */
-
-
-/*
-  Основной фон с мелкими дизайнерскими точками.
-  Не заменяет ваш синий градиент.
-*/
-body {
-  position: relative;
-
-  overflow-x: hidden;
 
   background-image:
     radial-gradient(
@@ -1670,9 +83,9 @@ body {
     ),
     linear-gradient(
       135deg,
-      #08076a 0%,
-      #17149d 46%,
-      #2925c7 100%
+      var(--bg-deep) 0%,
+      var(--bg) 46%,
+      var(--bg-light) 100%
     );
 
   background-size:
@@ -1683,10 +96,6 @@ body {
     auto;
 }
 
-
-/*
-  Сетка на фоне.
-*/
 body::before {
   position: fixed;
   inset: 0;
@@ -1708,14 +117,9 @@ body::before {
   background-size: 150px 150px;
 
   content: "";
-
   pointer-events: none;
 }
 
-
-/*
-  Диагональная маршрутная линия.
-*/
 body::after {
   position: fixed;
   top: 0;
@@ -1745,15 +149,32 @@ body::after {
   );
 
   content: "";
-
   transform: rotate(-8deg) scale(1.2);
-
   pointer-events: none;
 }
 
+button,
+input,
+select,
+textarea {
+  max-width: 100%;
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+img,
+svg,
+canvas,
+iframe {
+  display: block;
+  max-width: 100%;
+}
 
 /*
-  Контент должен быть поверх декоративного фона.
+  Header.
 */
 .site-header,
 .page-content,
@@ -1762,11 +183,145 @@ body::after {
   z-index: 1;
 }
 
+.site-header {
+  width: 100%;
+}
 
-/* =========================================================
-   БОЛЬШАЯ ГЕОМЕТКА СПРАВА
-   ========================================================= */
+.header-content {
+  position: relative;
 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: min(1180px, calc(100% - 48px));
+  min-height: 122px;
+  margin: 0 auto;
+  padding: 28px 0 18px;
+
+  text-align: center;
+}
+
+.header-content > div:first-child {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 0;
+}
+
+/*
+  Логотип ZigZag.
+
+  Важно: не задаём для .logo фиксированные
+  44px на мобильном устройстве.
+*/
+.site-header .logo {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+
+  margin: 0;
+
+  color: #ffffff;
+
+  font-family: "Syne", sans-serif;
+  font-size: clamp(46px, 7vw, 76px);
+  font-weight: 800;
+  letter-spacing: -5px;
+  line-height: 0.85;
+  text-transform: uppercase;
+
+  text-shadow:
+    0 4px 20px rgba(0, 0, 0, 0.2),
+    0 0 30px rgba(167, 159, 255, 0.3);
+}
+
+.site-header .logo::after {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+
+  width: 31px;
+  height: 38px;
+  margin: 0;
+
+  color: #ffffff;
+
+  font-family: Arial, sans-serif;
+  font-size: 52px;
+  font-weight: 700;
+  letter-spacing: 0;
+  line-height: 1;
+
+  text-shadow:
+    0 0 14px rgba(213, 208, 255, 0.9);
+
+  content: "🗲";
+}
+
+.site-header .header-content > div:first-child::after {
+  width: 90px;
+  height: 2px;
+  margin-top: 13px;
+
+  border-radius: 999px;
+
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.95),
+    transparent
+  );
+
+  box-shadow: 0 0 16px rgba(190, 183, 255, 0.7);
+
+  content: "";
+}
+
+.tagline {
+  margin: 10px 0 0;
+
+  color: rgba(255, 255, 255, 0.62);
+
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+}
+
+.city-badge {
+  position: absolute;
+  top: 50%;
+  right: 0;
+
+  padding: 8px 12px;
+
+  transform: translateY(-50%);
+
+  border: 1px solid var(--line);
+  border-radius: 999px;
+
+  color: rgba(255, 255, 255, 0.9);
+
+  background: rgba(255, 255, 255, 0.1);
+
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/*
+  Main layout.
+*/
+.page-content {
+  width: min(1180px, calc(100% - 48px));
+  margin: 0 auto;
+  padding: 10px 0 35px;
+}
 
 .page-content::before {
   position: fixed;
@@ -1785,19 +340,10 @@ body::after {
     0 0 0 1px rgba(255, 255, 255, 0.04);
 
   content: "";
-
   opacity: 0.9;
-
   transform: rotate(-45deg);
-
   pointer-events: none;
 }
-
-
-/* =========================================================
-   БОЛЬШОЙ КОМПАС СЛЕВА
-   ========================================================= */
-
 
 .page-content::after {
   position: fixed;
@@ -1826,25 +372,49 @@ body::after {
   font-weight: 300;
 
   content: "✦";
-
   transform: rotate(18deg);
-
   pointer-events: none;
 }
 
-
-/* =========================================================
-   ДЕКОР В КАРТОЧКАХ
-   ========================================================= */
-
-
 /*
-  Круглая фигура в правом верхнем углу карточек.
+  Cards.
 */
 .card {
   position: relative;
+
+  overflow: hidden;
+
+  margin-bottom: 28px;
+  padding: clamp(25px, 4vw, 42px);
+
+  border: 1px solid var(--line);
+  border-radius: var(--radius-large);
+
+  background: linear-gradient(
+    145deg,
+    rgba(255, 255, 255, 0.11),
+    rgba(255, 255, 255, 0.035)
+  );
+
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.18);
+  backdrop-filter: blur(18px);
 }
 
+.card:first-child {
+  min-height: 465px;
+
+  background:
+    radial-gradient(
+      circle at 88% 15%,
+      rgba(133, 124, 255, 0.4),
+      transparent 34%
+    ),
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.12),
+      rgba(255, 255, 255, 0.04)
+    );
+}
 
 .card::before {
   position: absolute;
@@ -1859,23 +429,9 @@ body::after {
   border-radius: 50%;
 
   content: "";
-
   pointer-events: none;
 }
 
-
-/*
-  Карточки и текст должны быть выше декора.
-*/
-.card > * {
-  position: relative;
-  z-index: 1;
-}
-
-
-/*
-  Декоративная пунктирная линия в блоке карты.
-*/
 .card:nth-child(3)::after {
   position: absolute;
   top: 90px;
@@ -1890,20 +446,577 @@ body::after {
   border-radius: 50%;
 
   content: "";
-
   transform: rotate(20deg);
-
   pointer-events: none;
 }
 
-
-/*
-  Маленькие маршрутные точки в карточках мест.
-*/
-.place-card {
+.card > * {
   position: relative;
+  z-index: 1;
 }
 
+/*
+  Section heading.
+*/
+.section-title-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 18px;
+
+  margin-bottom: 22px;
+}
+
+.page-content .card:first-child .section-title-row {
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  margin-bottom: 10px;
+
+  text-align: center;
+}
+
+.page-content .card:first-child .section-title-row > div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.section-label {
+  margin: 0 0 9px;
+
+  color: rgba(255, 255, 255, 0.58);
+
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.page-content .card:first-child .section-label {
+  margin-bottom: 12px;
+
+  color: rgba(255, 255, 255, 0.62);
+
+  letter-spacing: 0.18em;
+  text-align: center;
+}
+
+h2 {
+  margin: 0;
+
+  color: #ffffff;
+
+  font-family: "Syne", sans-serif;
+  font-size: clamp(34px, 5vw, 62px);
+  font-weight: 800;
+  letter-spacing: -3px;
+  line-height: 0.92;
+  text-transform: uppercase;
+}
+
+.page-content .card:first-child h2 {
+  max-width: 720px;
+
+  font-size: clamp(38px, 6vw, 68px);
+  letter-spacing: -4px;
+  line-height: 0.9;
+
+  text-align: center;
+}
+
+.page-content .card:first-child h2::after {
+  display: block;
+
+  width: 68px;
+  height: 3px;
+  margin: 20px auto 0;
+
+  border-radius: 999px;
+
+  background: linear-gradient(
+    90deg,
+    transparent,
+    #ffffff,
+    transparent
+  );
+
+  box-shadow: 0 0 18px rgba(255, 255, 255, 0.6);
+
+  content: "";
+}
+
+.section-description {
+  max-width: 670px;
+  margin: 0 0 20px;
+
+  color: var(--muted);
+
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.count-badge {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+
+  min-height: 32px;
+  padding: 6px 12px;
+
+  border: 1px solid var(--line);
+  border-radius: 999px;
+
+  color: rgba(255, 255, 255, 0.78);
+
+  background: rgba(255, 255, 255, 0.07);
+
+  font-size: 11px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+#serverStatus {
+  display: none !important;
+}
+
+/*
+  Search form.
+*/
+#routeForm {
+  position: relative;
+
+  display: grid;
+  gap: 18px;
+
+  width: min(100%, 780px);
+  max-width: 900px;
+  margin: 28px auto 0;
+  padding: clamp(22px, 4vw, 38px);
+
+  border: 1px solid rgba(255, 255, 255, 0.32);
+  border-radius: 26px;
+
+  background: linear-gradient(
+    145deg,
+    rgba(255, 255, 255, 0.16),
+    rgba(255, 255, 255, 0.055)
+  );
+
+  box-shadow:
+    0 24px 55px rgba(0, 0, 0, 0.22),
+    inset 0 1px 0 rgba(255, 255, 255, 0.16);
+
+  backdrop-filter: blur(20px);
+}
+
+#routeForm::before {
+  position: absolute;
+  top: 0;
+  left: 50%;
+
+  width: 110px;
+  height: 3px;
+
+  border-radius: 0 0 999px 999px;
+
+  background: #ffffff;
+
+  box-shadow: 0 4px 16px rgba(255, 255, 255, 0.45);
+
+  content: "";
+  transform: translateX(-50%);
+}
+
+.form-grid,
+#routeForm .form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.form-grid-full {
+  grid-column: 1 / -1;
+}
+
+.field,
+#routeForm .field {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+
+  min-width: 0;
+
+  color: rgba(255, 255, 255, 0.75);
+
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+}
+
+.field input,
+.field select,
+#routeForm .field input,
+#routeForm .field select {
+  width: 100%;
+  min-width: 0;
+  min-height: 56px;
+  padding: 0 17px;
+
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 15px;
+  outline: none;
+
+  color: #ffffff;
+
+  background: linear-gradient(
+    135deg,
+    rgba(5, 5, 75, 0.45),
+    rgba(79, 70, 194, 0.23)
+  );
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.06),
+    0 8px 20px rgba(0, 0, 0, 0.09);
+
+  font-size: 15px;
+  font-weight: 600;
+
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.field input:hover,
+.field select:hover,
+#routeForm .field input:hover,
+#routeForm .field select:hover {
+  border-color: rgba(255, 255, 255, 0.4);
+
+  background: linear-gradient(
+    135deg,
+    rgba(8, 7, 91, 0.55),
+    rgba(91, 81, 215, 0.3)
+  );
+}
+
+.field input:focus,
+.field select:focus,
+#routeForm .field input:focus,
+#routeForm .field select:focus {
+  border-color: rgba(255, 255, 255, 0.9);
+
+  box-shadow:
+    0 0 0 4px rgba(145, 136, 255, 0.23),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.field select option,
+#routeForm .field select option {
+  color: #17158d;
+  background: #ffffff;
+}
+
+.interests,
+#routeForm .interests {
+  min-width: 0;
+  margin: 4px 0 0;
+  padding: 18px;
+
+  border: 1px solid rgba(255, 255, 255, 0.17);
+  border-radius: 18px;
+
+  background: rgba(0, 0, 70, 0.16);
+}
+
+.interests legend,
+#routeForm .interests legend {
+  padding: 0 8px;
+
+  color: rgba(255, 255, 255, 0.76);
+
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+}
+
+.interest-list,
+#routeForm .interest-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+
+  min-width: 0;
+}
+
+.check-label,
+#routeForm .check-label {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 8px;
+
+  width: 100%;
+  min-width: 0;
+  min-height: 48px;
+  padding: 10px 13px;
+
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 13px;
+
+  color: rgba(255, 255, 255, 0.82);
+
+  background: rgba(255, 255, 255, 0.055);
+
+  font-size: 13px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    background 0.2s ease;
+}
+
+.check-label:hover,
+#routeForm .check-label:hover {
+  transform: translateY(-2px);
+
+  border-color: rgba(255, 255, 255, 0.48);
+
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.check-label:has(input:checked),
+#routeForm .check-label:has(input:checked) {
+  border-color: #ffffff;
+
+  color: #17158d;
+
+  background: #ffffff;
+
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.14);
+}
+
+.check-label input,
+#routeForm .check-label input {
+  flex-shrink: 0;
+
+  width: 17px;
+  height: 17px;
+  min-height: 17px;
+  margin: 0;
+
+  accent-color: #7067ff;
+}
+
+#findPlacesButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: min(100%, 420px);
+  min-height: 56px;
+  margin: 6px auto 0;
+  padding: 15px 22px;
+
+  border: 1px solid #ffffff;
+  border-radius: 999px;
+
+  color: #17158d;
+
+  background: #ffffff;
+
+  box-shadow:
+    0 16px 30px rgba(0, 0, 0, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.7);
+
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-align: center;
+  text-transform: uppercase;
+
+  transition: 0.2s ease;
+}
+
+#findPlacesButton::after {
+  margin-left: 10px;
+
+  font-size: 18px;
+  line-height: 1;
+
+  content: "→";
+}
+
+#findPlacesButton:hover {
+  transform: translateY(-3px);
+
+  background: #e9e7ff;
+
+  box-shadow:
+    0 22px 35px rgba(0, 0, 0, 0.26),
+    0 0 22px rgba(204, 199, 255, 0.25);
+}
+
+#findPlacesButton:active {
+  transform: translateY(0);
+}
+
+/*
+  Buttons and messages.
+*/
+.primary-button,
+.secondary-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  min-height: 52px;
+  padding: 13px 22px;
+
+  border-radius: 999px;
+
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+
+  transition: 0.2s ease;
+}
+
+.primary-button {
+  width: fit-content;
+  min-width: 285px;
+
+  border: 1px solid #ffffff;
+
+  color: var(--accent-text);
+
+  background: #ffffff;
+
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.17);
+}
+
+.primary-button:hover {
+  transform: translateY(-3px);
+
+  background: #e9e8ff;
+
+  box-shadow: 0 18px 35px rgba(0, 0, 0, 0.25);
+}
+
+.secondary-button {
+  border: 1px solid var(--line);
+
+  color: #ffffff;
+
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.secondary-button:hover {
+  border-color: var(--line-strong);
+
+  background: rgba(255, 255, 255, 0.16);
+}
+
+.primary-button:disabled,
+.secondary-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+.info-message {
+  margin-top: 15px;
+  padding: 13px 15px;
+
+  border: 1px solid var(--line);
+  border-radius: var(--radius-small);
+
+  color: rgba(255, 255, 255, 0.78);
+
+  background: rgba(255, 255, 255, 0.07);
+
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.info-message.is-success {
+  border-color: rgba(185, 178, 255, 0.55);
+
+  color: #ffffff;
+
+  background: rgba(112, 103, 255, 0.28);
+}
+
+.info-message.is-error {
+  border-color: rgba(255, 151, 165, 0.56);
+
+  color: #ffd6dc;
+
+  background: rgba(177, 30, 59, 0.2);
+}
+
+/*
+  Places, events and routes.
+*/
+.places-list,
+.route-list,
+.events-list,
+.saved-routes {
+  display: grid;
+  gap: 15px;
+
+  margin-top: 18px;
+}
+
+#places {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.place-card,
+.route-card,
+.event-card,
+.saved-route-card {
+  border: 1px solid var(--line);
+  border-radius: 22px;
+
+  color: #ffffff;
+
+  background: rgba(255, 255, 255, 0.06);
+
+  transition: 0.22s ease;
+}
+
+.place-card {
+  position: relative;
+
+  min-height: 240px;
+  padding: 22px;
+  overflow: hidden;
+
+  cursor: pointer;
+}
+
+.place-card::before {
+  position: absolute;
+  top: -50px;
+  right: -45px;
+
+  width: 135px;
+  height: 135px;
+
+  border-radius: 50%;
+
+  background: rgba(141, 133, 255, 0.19);
+
+  content: "";
+}
 
 .place-card::after {
   position: absolute;
@@ -1916,18 +1029,152 @@ body::after {
   letter-spacing: 4px;
 
   content: "● · · · ◆";
-
   pointer-events: none;
 }
 
+.place-card:hover {
+  transform: translateY(-6px);
 
-/*
-  Декор для блока афиши.
-*/
+  border-color: var(--line-strong);
+
+  background: rgba(255, 255, 255, 0.11);
+}
+
+.place-card.is-selected {
+  border-color: rgba(255, 255, 255, 0.85);
+
+  background:
+    radial-gradient(
+      circle at 86% 8%,
+      rgba(142, 133, 255, 0.5),
+      transparent 38%
+    ),
+    rgba(255, 255, 255, 0.13);
+}
+
+.card-title,
+.event-card h3,
+.saved-route-card h3 {
+  position: relative;
+
+  margin: 0;
+
+  color: #ffffff;
+
+  font-family: "Syne", sans-serif;
+  font-size: 21px;
+  font-weight: 700;
+  letter-spacing: -0.8px;
+  line-height: 1;
+}
+
+.card-description,
+.event-card p {
+  position: relative;
+
+  margin: 12px 0;
+
+  color: var(--muted);
+
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+.card-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+
+  color: rgba(255, 255, 255, 0.69);
+
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.45;
+}
+
+.type-badge {
+  display: inline-flex;
+  flex-shrink: 0;
+
+  padding: 5px 8px;
+
+  border: 1px solid var(--line);
+  border-radius: 999px;
+
+  color: rgba(255, 255, 255, 0.78);
+
+  background: rgba(255, 255, 255, 0.09);
+
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.route-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+
+  padding: 16px;
+}
+
+.route-number {
+  display: inline-grid;
+  flex-shrink: 0;
+  place-items: center;
+
+  width: 36px;
+  height: 36px;
+
+  border-radius: 50%;
+
+  color: var(--accent-text);
+
+  background: #ffffff;
+
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.route-card-content {
+  min-width: 0;
+  flex: 1;
+}
+
+.route-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 11px;
+
+  margin-top: 18px;
+}
+
+.route-actions .primary-button,
+.route-actions .secondary-button {
+  flex: 1;
+  min-width: 230px;
+}
+
+.event-card {
+  padding: 21px;
+}
+
+.event-link {
+  display: inline-flex;
+
+  margin-top: 12px;
+
+  color: #d3cfff;
+
+  font-size: 12px;
+  font-weight: 700;
+  text-decoration: underline;
+}
+
 .events-list {
   position: relative;
 }
-
 
 .events-list::before {
   position: absolute;
@@ -1950,23 +1197,153 @@ body::after {
   font-size: 78px;
 
   content: "✦";
-
   pointer-events: none;
 }
-
 
 .events-list > * {
   position: relative;
   z-index: 1;
 }
 
+.saved-route-card {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 15px;
 
-/* =========================================================
-   МОБИЛЬНАЯ ВЕРСИЯ
-   ========================================================= */
+  padding: 16px;
+}
 
+.saved-route-date {
+  margin: 7px 0 0;
 
+  color: var(--muted);
+
+  font-size: 12px;
+}
+
+.delete-route-button {
+  flex-shrink: 0;
+
+  padding: 9px 11px;
+
+  border: 1px solid rgba(255, 160, 172, 0.5);
+  border-radius: 10px;
+
+  color: #ffd4da;
+
+  background: rgba(170, 25, 54, 0.18);
+
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.empty-state {
+  padding: 24px;
+
+  border: 1px dashed var(--line);
+  border-radius: 16px;
+
+  color: var(--muted);
+
+  text-align: center;
+}
+
+/*
+  Map.
+*/
+#map,
+.map {
+  display: block;
+
+  width: 100% !important;
+  max-width: 100%;
+  height: 560px !important;
+  min-height: 560px !important;
+  overflow: hidden;
+
+  border: 1px solid rgba(255, 255, 255, 0.26);
+  border-radius: 24px;
+
+  background: #17158d;
+
+  box-shadow:
+    0 22px 60px rgba(0, 0, 0, 0.24),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+/*
+  Footer.
+*/
+.site-footer {
+  width: min(1180px, calc(100% - 48px));
+  margin: 0 auto;
+  padding: 8px 0 38px;
+
+  border-top: 1px solid var(--line);
+
+  color: rgba(255, 255, 255, 0.5);
+
+  font-size: 12px;
+  text-align: center;
+}
+
+.site-footer p {
+  margin: 7px 0;
+}
+
+/*
+  Tablet.
+*/
+@media (max-width: 900px) {
+  #places {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  #map,
+  .map {
+    height: 500px !important;
+    min-height: 500px !important;
+  }
+}
+
+/*
+  Phones.
+*/
 @media (max-width: 700px) {
+  body {
+    min-width: 0;
+  }
+
+  .header-content {
+    width: calc(100% - 28px);
+    min-height: 104px;
+    padding: 23px 0 16px;
+  }
+
+  .site-header .logo {
+    gap: 7px;
+
+    font-size: 51px;
+    letter-spacing: -4px;
+  }
+
+  .site-header .logo::after {
+    width: 26px;
+    height: 32px;
+
+    font-size: 27px;
+  }
+
+  .city-badge {
+    display: none;
+  }
+
+  .page-content {
+    width: calc(100% - 28px);
+    padding-top: 5px;
+  }
+
   .page-content::before {
     top: 145px;
     right: -100px;
@@ -1989,6 +1366,17 @@ body::after {
     font-size: 110px;
   }
 
+  .card {
+    margin-bottom: 18px;
+    padding: 24px 20px;
+
+    border-radius: 24px;
+  }
+
+  .card:first-child {
+    min-height: auto;
+  }
+
   .card::before {
     top: -45px;
     right: -48px;
@@ -2009,6 +1397,91 @@ body::after {
     border-width: 3px;
   }
 
+  .page-content .card:first-child h2 {
+    font-size: 42px;
+    letter-spacing: -3px;
+  }
+
+  .form-grid,
+  #routeForm .form-grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 14px;
+  }
+
+  .form-grid-full {
+    grid-column: auto;
+  }
+
+  #routeForm {
+    width: 100%;
+    margin-top: 22px;
+    padding: 22px 16px;
+
+    border-radius: 21px;
+  }
+
+  .interest-list,
+  #routeForm .interest-list {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 8px;
+  }
+
+  .check-label,
+  #routeForm .check-label {
+    min-height: 46px;
+  }
+
+  #findPlacesButton {
+    width: 100%;
+  }
+
+  .primary-button {
+    width: 100%;
+    min-width: 0;
+  }
+
+  #places {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .place-card {
+    min-height: 200px;
+  }
+
+  .place-card::after {
+    top: 15px;
+    right: 15px;
+
+    font-size: 14px;
+    letter-spacing: 2px;
+  }
+
+  #map,
+  .map {
+    height: 460px !important;
+    min-height: 460px !important;
+
+    border-radius: 20px;
+  }
+
+  .route-actions {
+    flex-direction: column;
+  }
+
+  .route-actions .primary-button,
+  .route-actions .secondary-button {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .saved-route-card {
+    flex-direction: column;
+  }
+
+  .delete-route-button {
+    width: 100%;
+  }
+
   .events-list::before {
     top: -40px;
     right: -24px;
@@ -2021,14 +1494,48 @@ body::after {
     font-size: 55px;
   }
 
-  .place-card::after {
-    top: 15px;
-    right: 15px;
-
-    font-size: 14px;
-    letter-spacing: 2px;
+  .site-footer {
+    width: calc(100% - 28px);
   }
 }
 
+/*
+  Small phones.
+*/
+@media (max-width: 430px) {
+  .header-content {
+    min-height: 93px;
+  }
 
+  .site-header .logo {
+    font-size: 43px;
+    letter-spacing: -3px;
+  }
 
+  .site-header .logo::after {
+    width: 23px;
+    height: 28px;
+
+    font-size: 24px;
+  }
+
+  .card {
+    padding: 22px 16px;
+  }
+
+  .page-content .card:first-child h2,
+  h2 {
+    font-size: 34px;
+    letter-spacing: -2px;
+  }
+
+  #map,
+  .map {
+    height: 380px !important;
+    min-height: 380px !important;
+  }
+
+  .place-card {
+    padding: 18px;
+  }
+}
