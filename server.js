@@ -157,7 +157,7 @@ app.post('/webhook', async (request, response) => {
                 [
                   {
                     type: 'link',
-                    text: '🚀 Открыть ZigZag',
+                    text: ' Открыть ZigZag',
                     url: 'https://zigzag-pro.onrender.com'
                   }
                 ]
