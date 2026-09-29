@@ -6,7 +6,7 @@ info:
   description: API сервиса ZigZag.
 
 servers:
-  - url: https://YOUR-RENDER-APP.onrender.com
+  - url: https://zigzag-pro.onrender.com/
     description: Production
 
 paths:

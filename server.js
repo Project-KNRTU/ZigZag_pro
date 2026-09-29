@@ -28,6 +28,125 @@ console.log('ZIGZAG SERVER: STARTING');
 
 app.use(express.json());
 
+
+app.post('/webhook', async (request, response) => {
+  try {
+    const secret = process.env.MAX_WEBHOOK_SECRET;
+
+    
+    if (
+      secret &&
+      request.headers['x-max-bot-api-secret'] !== secret
+    ) {
+      console.warn('MAX WEBHOOK: неверный секрет');
+
+      return response.status(401).json({
+        success: false,
+        error: 'Unauthorized'
+      });
+    }
+
+    const update = request.body;
+
+    console.log(
+      'MAX WEBHOOK:',
+      JSON.stringify(update, null, 2)
+    );
+
+     
+    if (update.update_type === 'message_created') {
+      const message = update.message || update;
+
+      const chatId =
+        update.chat_id ||
+        message.chat_id ||
+        message.recipient?.chat_id;
+
+      const text =
+        message.body?.text ||
+        '';
+
+      console.log('MAX MESSAGE:', {
+        chatId,
+        text
+      });
+
+      if (chatId) {
+        await sendMaxMessage(
+          chatId,
+          `Привет! 👋\n\nЯ бот ZigZag.\n\nТы написал: ${text}`
+        );
+      }
+    }
+
+     
+    if (update.update_type === 'bot_started') {
+      const chatId = update.chat_id;
+
+      if (chatId) {
+        await sendMaxMessage(
+          chatId,
+          'Привет! 👋 Я бот ZigZag.\n\nНажми кнопку ниже, чтобы открыть приложение.'
+        );
+      }
+    }
+
+     
+    return response.sendStatus(200);
+
+  } catch (error) {
+    console.error(
+      'MAX WEBHOOK ERROR:',
+      error
+    );
+
+     
+    return response.sendStatus(200);
+  }
+});
+
+ 
+async function sendMaxMessage(chatId, text) {
+  const token = process.env.MAX_BOT_TOKEN;
+
+  if (!token) {
+    throw new Error(
+      'MAX_BOT_TOKEN не настроен'
+    );
+  }
+
+  const maxResponse = await fetch(
+    `https://platform-api2.max.ru/messages?chat_id=${chatId}`,
+    {
+      method: 'POST',
+
+      headers: {
+        'Authorization': token,
+        'Content-Type': 'application/json'
+      },
+
+      body: JSON.stringify({
+        text
+      })
+    }
+  );
+
+  const result = await maxResponse.json();
+
+  console.log(
+    'MAX SEND RESPONSE:',
+    JSON.stringify(result, null, 2)
+  );
+
+  if (!maxResponse.ok) {
+    throw new Error(
+      `MAX API ${maxResponse.status}: ${JSON.stringify(result)}`
+    );
+  }
+
+  return result;
+}
+
 app.use(
   express.static(
     path.join(__dirname, 'public')

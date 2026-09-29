@@ -4,7 +4,7 @@ solution:
   name: "ZigZag"
 
 api:
-  base_url: "https://YOUR-RENDER-APP.onrender.com"
+  base_url: "https://zigzag-pro.onrender.com/"
 
 checks:
 
