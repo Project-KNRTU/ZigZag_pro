@@ -3,7 +3,6 @@ const path = require('node:path');
 
 const Database = require('better-sqlite3');
 
-
 /*
   Если DB_PATH есть в .env:
   ./data/zigzag.db
@@ -11,13 +10,12 @@ const Database = require('better-sqlite3');
   База будет храниться в папке проекта:
   ZigZag_pro/data/zigzag.db
 
-  Если переменной нет, используем:
+  Если переменной нет:
   ZigZag_pro/zigzag.db
 */
 const databasePath = process.env.DB_PATH
   ? path.resolve(process.env.DB_PATH)
   : path.join(__dirname, 'zigzag.db');
-
 
 /*
   Получаем папку, где должна лежать база.
@@ -26,32 +24,30 @@ const databaseDirectory = path.dirname(
   databasePath
 );
 
-
 /*
-  Создаём папку data автоматически,
+  Создаём папку автоматически,
   если её ещё нет.
 */
 fs.mkdirSync(databaseDirectory, {
   recursive: true
 });
 
-
 console.log(
   `SQLite database: ${databasePath}`
 );
 
-
 const db = new Database(databasePath);
-
 
 /*
   Таблица сохранённых маршрутов.
+
+  user_id — настоящий ID пользователя MAX.
 */
 db.exec(`
   CREATE TABLE IF NOT EXISTS routes (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
 
-    user_id TEXT NOT NULL DEFAULT 'development-user',
+    user_id TEXT NOT NULL,
 
     title TEXT NOT NULL,
 
@@ -61,36 +57,50 @@ db.exec(`
   );
 `);
 
-
 /*
   Сохранение маршрута.
 */
-function saveRoute(routeData) {
+function saveRoute(userId, routeData) {
+  if (!userId) {
+    throw new Error(
+      'Не указан userId.'
+    );
+  }
+
   const title =
     routeData.title ||
     'Маршрут ZigZag';
 
   const statement = db.prepare(`
     INSERT INTO routes (
+      user_id,
       title,
       route_data
     )
-    VALUES (?, ?)
+    VALUES (?, ?, ?)
   `);
 
   const result = statement.run(
+    String(userId),
     title,
     JSON.stringify(routeData)
   );
 
-  return Number(result.lastInsertRowid);
+  return Number(
+    result.lastInsertRowid
+  );
 }
 
-
 /*
-  Список маршрутов тестового пользователя.
+  Список маршрутов текущего пользователя.
 */
-function getRoutes() {
+function getRoutes(userId) {
+  if (!userId) {
+    throw new Error(
+      'Не указан userId.'
+    );
+  }
+
   const statement = db.prepare(`
     SELECT
       id,
@@ -103,7 +113,7 @@ function getRoutes() {
   `);
 
   const rows = statement.all(
-    'development-user'
+    String(userId)
   );
 
   return rows.map((row) => {
@@ -111,16 +121,27 @@ function getRoutes() {
       id: row.id,
       title: row.title,
       createdAt: row.created_at,
-      data: JSON.parse(row.route_data)
+      data: JSON.parse(
+        row.route_data
+      )
     };
   });
 }
 
-
 /*
-  Один маршрут по его ID.
+  Один маршрут по ID.
+
+  Одновременно проверяем user_id,
+  чтобы пользователь не мог открыть
+  чужой маршрут.
 */
-function getRouteById(routeId) {
+function getRouteById(userId, routeId) {
+  if (!userId) {
+    throw new Error(
+      'Не указан userId.'
+    );
+  }
+
   const statement = db.prepare(`
     SELECT
       id,
@@ -134,7 +155,7 @@ function getRouteById(routeId) {
 
   const row = statement.get(
     routeId,
-    'development-user'
+    String(userId)
   );
 
   if (!row) {
@@ -145,15 +166,25 @@ function getRouteById(routeId) {
     id: row.id,
     title: row.title,
     createdAt: row.created_at,
-    data: JSON.parse(row.route_data)
+    data: JSON.parse(
+      row.route_data
+    )
   };
 }
 
-
 /*
   Удаление маршрута.
+
+  Удалить можно только маршрут
+  текущего пользователя.
 */
-function deleteRoute(routeId) {
+function deleteRoute(userId, routeId) {
+  if (!userId) {
+    throw new Error(
+      'Не указан userId.'
+    );
+  }
+
   const statement = db.prepare(`
     DELETE FROM routes
     WHERE id = ?
@@ -162,12 +193,11 @@ function deleteRoute(routeId) {
 
   const result = statement.run(
     routeId,
-    'development-user'
+    String(userId)
   );
 
   return result.changes > 0;
 }
-
 
 module.exports = {
   saveRoute,

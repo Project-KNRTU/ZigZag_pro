@@ -12,3 +12,5 @@ data/
 
 npm-debug.log
 .DS_Store
+
+certs/

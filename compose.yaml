@@ -11,8 +11,15 @@ services:
     env_file:
       - .env
 
+    environment:
+      DB_PATH: /app/data/zigzag.db
+
+    command:
+      - node
+      - server.js
+
     ports:
-      - "3000:3000"
+      - "127.0.0.1:3000:3000"
 
     volumes:
       - zigzag-data:/app/data
@@ -29,9 +36,15 @@ services:
     env_file:
       - .env
 
+    environment:
+      NODE_EXTRA_CA_CERTS: /app/certs/max-ca.pem
+
     command:
       - node
       - bot.mjs
+
+    depends_on:
+      - zigzag-app
 
 volumes:
   zigzag-data:

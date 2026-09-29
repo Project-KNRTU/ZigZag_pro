@@ -86,19 +86,50 @@ function safeUrl(value) {
 }
 
 async function requestApi(url, options = {}) {
-  const response = await fetch(url, options);
+  const headers = new Headers(
+    options.headers
+  );
 
-  let data = null;
+  /*
+    MAX передаёт подписанные данные
+    пользователя через WebApp.initData.
+
+    Мы отправляем исходную строку на сервер.
+    Сервер самостоятельно проверяет её подпись
+    и определяет user.id.
+  */
+  const initData =
+    window.WebApp?.initData;
+
+  if (initData) {
+    headers.set(
+      'X-Max-Init-Data',
+      initData
+    );
+  }
+
+  const response = await fetch(
+    url,
+    {
+      ...options,
+      headers
+    }
+  );
+
+  let data;
 
   try {
     data = await response.json();
-  } catch (error) {
+  } catch {
     throw new Error(
       'Сервер вернул ответ в неизвестном формате.'
     );
   }
 
-  if (!response.ok || !data.success) {
+  if (
+    !response.ok ||
+    !data.success
+  ) {
     throw new Error(
       data.details ||
       data.error ||

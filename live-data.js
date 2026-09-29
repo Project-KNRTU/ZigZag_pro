@@ -794,7 +794,7 @@ async function getEvents(visitDate) {
     .filter(Boolean);
 
   console.log(
-    `✅ KudaGo: событий на ${visitDate}: ${events.length}`
+    ` KudaGo: событий на ${visitDate}: ${events.length}`
   );
 
   return saveCache(cacheKey, events);

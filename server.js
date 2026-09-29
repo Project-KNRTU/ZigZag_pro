@@ -1,6 +1,6 @@
 require('dotenv').config();
 
-const path = require('node:path');
+const path =require('node:path');
 const express = require('express');
 
 const {
@@ -15,25 +15,29 @@ const {
   deleteRoute
 } = require('./database');
 
+const {
+  requireMaxUser
+} = require('./max-auth');
 
 const app = express();
+console.log('ZIGZAG SERVER: NEW SERVER.JS');
 
 const PORT = process.env.PORT || 3000;
 
-
+/*
+  Разбираем JSON-запросы.
+*/
 app.use(express.json());
 
 
 app.use(
-  express.static(__dirname)
+  express.static(
+    path.join(__dirname, 'public')
+  )
 );
 
-
 /*
-  Проверка запуска сервера.
-
-  Откройте:
-  http://localhost:3000/api/health
+  Проверка работоспособности сервера.
 */
 app.get('/api/health', (request, response) => {
   response.json({
@@ -43,19 +47,18 @@ app.get('/api/health', (request, response) => {
   });
 });
 
-
 /*
-  Передаёт в браузер только публичные ключи,
-  которые нужны карте и построению маршрутов.
-
-  Адрес:
-  GET /api/config
+  Конфигурация карт.
 */
 app.get('/api/config', (request, response) => {
   const mapglKey = process.env.MAPGL_KEY;
-  const directionsKey = process.env.DIRECTIONS_KEY;
+  const directionsKey =
+    process.env.DIRECTIONS_KEY;
 
-  if (!mapglKey || !directionsKey) {
+  if (
+    !mapglKey ||
+    !directionsKey
+  ) {
     return response.status(500).json({
       success: false,
       error:
@@ -65,35 +68,37 @@ app.get('/api/config', (request, response) => {
 
   response.json({
     success: true,
-
     mapglKey,
-
     directionsKey
   });
 });
 
-
 /*
-  Возвращает реальные места из 2ГИС Search API.
+  Поиск мест.
 
-  Примеры:
-
-  /api/places?categories=cafes
-
-  /api/places?categories=cafes,museums,parks,sights
+  Этот API пока публичный.
 */
-app.get('/api/places', async (request, response) => {
+app.get('/api/places', async (
+  request,
+  response
+) => {
   try {
-    const categoriesParameter = String(
-      request.query.categories || ''
-    );
+    const categoriesParameter =
+      String(
+        request.query.categories || ''
+      );
 
-    const categories = categoriesParameter
-      .split(',')
-      .map((category) => category.trim())
-      .filter(Boolean);
+    const categories =
+      categoriesParameter
+        .split(',')
+        .map(
+          (category) =>
+            category.trim()
+        )
+        .filter(Boolean);
 
-    const places = await getPlaces(categories);
+    const places =
+      await getPlaces(categories);
 
     response.json({
       success: true,
@@ -102,104 +107,170 @@ app.get('/api/places', async (request, response) => {
       places
     });
   } catch (error) {
-    console.error('Ошибка поиска мест:', error);
+    console.error(
+      'Ошибка поиска мест:',
+      error
+    );
 
     response.status(500).json({
       success: false,
-      error: 'Не удалось получить реальные места.',
+      error:
+        'Не удалось получить реальные места.',
       details: error.message
     });
   }
 });
 
-
 /*
-  Возвращает настоящую афишу Казани из KudaGo.
+  Афиша событий.
 
-  Адрес:
-  GET /api/events
+  Этот API пока публичный.
 */
-app.get('/api/events', async (request, response) => {
+app.get('/api/events', async (
+  request,
+  response
+) => {
   try {
-    const visitDate = String(request.query.date || '');
+    const visitDate =
+      String(
+        request.query.date || ''
+      );
 
-    if (!/^\d{4}-\d{2}-\d{2}$/.test(visitDate)) {
+    if (
+      !/^\d{4}-\d{2}-\d{2}$/.test(
+        visitDate
+      )
+    ) {
       return response.status(400).json({
         success: false,
-        error: 'Передайте параметр date в формате YYYY-MM-DD.'
+        error:
+          'Передайте параметр date в формате YYYY-MM-DD.'
       });
     }
 
-    const events = await getEvents(visitDate);
+    const events =
+      await getEvents(visitDate);
 
     response.json({
       success: true,
       source: 'KudaGo',
       visitDate,
       count: events.length,
-      updatedAt: new Date().toISOString(),
+      updatedAt:
+        new Date().toISOString(),
       events
     });
   } catch (error) {
-    console.error('Ошибка загрузки афиши:', error);
+    console.error(
+      'Ошибка загрузки афиши:',
+      error
+    );
 
     response.status(500).json({
       success: false,
-      error: 'Не удалось получить афишу Казани.',
+      error:
+        'Не удалось получить афишу Казани.',
       details: error.message
     });
   }
 });
 
+/*
+  =====================================================
+  ЗАЩИЩЁННЫЕ МАРШРУТЫ
+  =====================================================
+
+  Всё, что находится ниже:
+    /api/routes
+    /api/routes/:id
+
+  требует подтверждённого пользователя MAX.
+
+  requireMaxUser:
+    1. получает X-Max-Init-Data;
+    2. проверяет подпись;
+    3. получает настоящий user.id;
+    4. записывает его в request.maxUserId.
+
+  После этого обработчик использует только
+  request.maxUserId.
+*/
+app.use(
+  '/api/routes',
+  requireMaxUser
+);
 
 /*
-  Все сохранённые маршруты.
-
-  Адрес:
-  GET /api/routes
+  Получение маршрутов текущего пользователя.
 */
-app.get('/api/routes', (request, response) => {
+app.get('/api/routes', (
+  request,
+  response
+) => {
   try {
-    const routes = getRoutes();
+    const routes =
+      getRoutes(
+        request.maxUserId
+      );
 
     response.json({
       success: true,
       routes
     });
   } catch (error) {
-    console.error('Ошибка чтения маршрутов:', error);
+    console.error(
+      'Ошибка чтения маршрутов:',
+      error
+    );
 
     response.status(500).json({
       success: false,
-      error: 'Не удалось загрузить сохранённые маршруты.'
+      error:
+        'Не удалось загрузить сохранённые маршруты.'
     });
   }
 });
 
-
 /*
-  Один маршрут по ID.
+  Получение одного маршрута.
 
-  Пример:
-  GET /api/routes/1
+  ВАЖНО:
+  database.js дополнительно проверяет,
+  что этот маршрут принадлежит
+  request.maxUserId.
 */
-app.get('/api/routes/:id', (request, response) => {
+app.get('/api/routes/:id', (
+  request,
+  response
+) => {
   try {
-    const routeId = Number(request.params.id);
+    const routeId =
+      Number(
+        request.params.id
+      );
 
-    if (!Number.isInteger(routeId) || routeId <= 0) {
+    if (
+      !Number.isInteger(routeId) ||
+      routeId <= 0
+    ) {
       return response.status(400).json({
         success: false,
-        error: 'Некорректный ID маршрута.'
+        error:
+          'Некорректный ID маршрута.'
       });
     }
 
-    const route = getRouteById(routeId);
+    const route =
+      getRouteById(
+        request.maxUserId,
+        routeId
+      );
 
     if (!route) {
       return response.status(404).json({
         success: false,
-        error: 'Маршрут не найден.'
+        error:
+          'Маршрут не найден.'
       });
     }
 
@@ -208,128 +279,181 @@ app.get('/api/routes/:id', (request, response) => {
       route
     });
   } catch (error) {
-    console.error('Ошибка чтения маршрута:', error);
+    console.error(
+      'Ошибка чтения маршрута:',
+      error
+    );
 
     response.status(500).json({
       success: false,
-      error: 'Не удалось открыть маршрут.'
+      error:
+        'Не удалось открыть маршрут.'
     });
   }
 });
 
-
 /*
-  Сохраняет маршрут в zigzag.db.
+  Сохранение маршрута.
 
-  Адрес:
-  POST /api/routes
+  userId НЕ берём из request.body.
+
+  Пользователь определяется только
+  через проверенный MAX initData.
 */
-app.post('/api/routes', (request, response) => {
+app.post('/api/routes', (
+  request,
+  response
+) => {
   try {
-    const routeData = request.body;
+    const routeData =
+      request.body;
 
-    if (!routeData || typeof routeData !== 'object') {
+    if (
+      !routeData ||
+      typeof routeData !== 'object' ||
+      Array.isArray(routeData)
+    ) {
       return response.status(400).json({
         success: false,
-        error: 'Не переданы данные маршрута.'
+        error:
+          'Не переданы данные маршрута.'
       });
     }
 
     if (
-      !Array.isArray(routeData.route) ||
+      !Array.isArray(
+        routeData.route
+      ) ||
       routeData.route.length === 0
     ) {
       return response.status(400).json({
         success: false,
-        error: 'Нельзя сохранить пустой маршрут.'
+        error:
+          'Нельзя сохранить пустой маршрут.'
       });
     }
 
-    const routeId = saveRoute(routeData);
+    const routeId =
+      saveRoute(
+        request.maxUserId,
+        routeData
+      );
 
     response.status(201).json({
       success: true,
-      message: 'Маршрут сохранён.',
+      message:
+        'Маршрут сохранён.',
       id: routeId
     });
   } catch (error) {
-    console.error('Ошибка сохранения маршрута:', error);
+    console.error(
+      'Ошибка сохранения маршрута:',
+      error
+    );
 
     response.status(500).json({
       success: false,
-      error: 'Не удалось сохранить маршрут.'
+      error:
+        'Не удалось сохранить маршрут.'
     });
   }
 });
 
-
 /*
-  Удаляет сохранённый маршрут.
+  Удаление маршрута.
 
-  Пример:
-  DELETE /api/routes/1
+  Удалить можно только маршрут
+  текущего пользователя MAX.
 */
-app.delete('/api/routes/:id', (request, response) => {
+app.delete('/api/routes/:id', (
+  request,
+  response
+) => {
   try {
-    const routeId = Number(request.params.id);
+    const routeId =
+      Number(
+        request.params.id
+      );
 
-    if (!Number.isInteger(routeId) || routeId <= 0) {
+    if (
+      !Number.isInteger(routeId) ||
+      routeId <= 0
+    ) {
       return response.status(400).json({
         success: false,
-        error: 'Некорректный ID маршрута.'
+        error:
+          'Некорректный ID маршрута.'
       });
     }
 
-    const wasDeleted = deleteRoute(routeId);
+    const wasDeleted =
+      deleteRoute(
+        request.maxUserId,
+        routeId
+      );
 
     if (!wasDeleted) {
       return response.status(404).json({
         success: false,
-        error: 'Маршрут не найден.'
+        error:
+          'Маршрут не найден.'
       });
     }
 
     response.json({
       success: true,
-      message: 'Маршрут удалён.'
+      message:
+        'Маршрут удалён.'
     });
   } catch (error) {
-    console.error('Ошибка удаления маршрута:', error);
+    console.error(
+      'Ошибка удаления маршрута:',
+      error
+    );
 
     response.status(500).json({
       success: false,
-      error: 'Не удалось удалить маршрут.'
+      error:
+        'Не удалось удалить маршрут.'
     });
   }
 });
 
 
 /*
-  Главная страница приложения.
+  Если адрес не найден.
 */
-app.get('/', (request, response) => {
-  response.sendFile(
-    path.join(__dirname, 'index.html')
-  );
-});
-
-
-/*
-  Обработка неизвестных адресов.
-*/
-app.use((request, response) => {
+app.use((
+  request,
+  response
+) => {
   response.status(404).json({
     success: false,
-    error: 'Адрес API не найден.'
+    error:
+      'Адрес API не найден.'
   });
 });
 
-
-app.listen(PORT, '0.0.0.0', () => {
-  console.log('');
-  console.log('==============================');
-  console.log(' ZigZag запущен');
-  console.log(` Порт: ${PORT}`);
-  console.log('==============================');
-  console.log('');
-});
+/*
+  Запуск сервера.
+*/
+app.listen(
+  PORT,
+  '0.0.0.0',
+  () => {
+    console.log('');
+    console.log(
+      '=============================='
+    );
+    console.log(
+      ' ZigZag запущен'
+    );
+    console.log(
+      ` Порт: ${PORT}`
+    );
+    console.log(
+      '=============================='
+    );
+    console.log('');
+  }
+); 
