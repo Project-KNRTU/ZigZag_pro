@@ -57,23 +57,29 @@ app.post('/webhook', async (request, response) => {
     if (update.update_type === 'message_created') {
       const message = update.message || update;
 
-      const chatId =
-        update.chat_id ||
-        message.chat_id ||
-        message.recipient?.chat_id;
+       const userId =
+  update.user_id ||
+  message.user_id ||
+  message.recipient?.user_id;
+
+const chatId =
+  update.chat_id ||
+  message.chat_id ||
+  message.recipient?.chat_id;
 
       const text =
         message.body?.text ||
         '';
 
       console.log('MAX MESSAGE:', {
-        chatId,
-        text
-      });
+  userId,
+  chatId,
+  text
+});
 
-      if (chatId) {
-        await sendMaxMessage(
-          chatId,
+if (userId) {
+  await sendMaxMessage(
+    userId,
           `Привет! 👋\n\nЯ бот ZigZag.\n\nТы написал: ${text}`
         );
       }
