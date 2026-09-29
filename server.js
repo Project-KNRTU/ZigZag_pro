@@ -80,16 +80,19 @@ app.post('/webhook', async (request, response) => {
     }
 
      
-    if (update.update_type === 'bot_started') {
-      const chatId = update.chat_id;
+     if (update.update_type === 'bot_started') {
+  const userId =
+    update.user_id ||
+    update.message?.user_id ||
+    update.message?.recipient?.user_id;
 
-      if (chatId) {
-        await sendMaxMessage(
-          chatId,
-          'Привет! 👋 Я бот ZigZag.\n\nНажми кнопку ниже, чтобы открыть приложение.'
-        );
-      }
-    }
+  if (userId) {
+    await sendMaxMessage(
+      userId,
+      'Привет! 👋 Я бот ZigZag.\n\nНажми кнопку ниже, чтобы открыть приложение.'
+    );
+  }
+}
 
      
     return response.sendStatus(200);
@@ -105,8 +108,10 @@ app.post('/webhook', async (request, response) => {
   }
 });
 
- 
-async function sendMaxMessage(chatId, text) {
+
+
+
+async function sendMaxMessage(userId, text) {
   const token = process.env.MAX_BOT_TOKEN;
 
   if (!token) {
@@ -116,7 +121,7 @@ async function sendMaxMessage(chatId, text) {
   }
 
   const maxResponse = await fetch(
-    `https://platform-api2.max.ru/messages?chat_id=${chatId}`,
+    `https://platform-api2.max.ru/messages?user_id=${encodeURIComponent(userId)}`,
     {
       method: 'POST',
 
@@ -126,7 +131,24 @@ async function sendMaxMessage(chatId, text) {
       },
 
       body: JSON.stringify({
-        text
+        text,
+
+        attachments: [
+          {
+            type: 'inline_keyboard',
+            payload: {
+              buttons: [
+                [
+                  {
+                    type: 'link',
+                    text: '🚀 Открыть ZigZag',
+                    url: 'https://zigzag-pro.onrender.com'
+                  }
+                ]
+              ]
+            }
+          }
+        ]
       })
     }
   );
